@@ -105,7 +105,7 @@ function showImage() {
 <style type="text/css">
 body { background-color: #COLOR3; 
 /* CHANGE: Color of Title, Showdown, and Middle Options */
-color: #FFFFFF; font-family: 'Comfortaa', cursive; text-align: center; }
+color: #COLOR1; font-family: 'Comfortaa', cursive; text-align: center; }
 #mainTable { margin: 40px auto; border-spacing: 20px; }
 #battleNumber { font-size: 20px; color: #COLOR1; padding-bottom: 20px; text-align: center; }
 #leftField, #rightField {
