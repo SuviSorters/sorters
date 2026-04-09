@@ -13,6 +13,7 @@
 <!-- CHANGE: TAB TITLE -->
 <title>Taylor Swift Sorter</title>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap" rel="stylesheet">
 
 <script type="text/javascript">
     // -- CHANGE: SONG TITLES --
@@ -103,9 +104,13 @@ function showImage() {
 </script>
 
 <style type="text/css">
-body { background-color: #1c1c1c; 
-/* CHANGE: Color of Title, Showdown, and Middle Options */
-color: #ffffff; font-family: 'Comfortaa', cursive; text-align: center; }
+body { background-color: #1c1c1c; color: #ffffff; font-family: 'Comfortaa', cursive; text-align: center; 
+h1 {
+    font-family: 'Cedarville Cursive', cursive;
+    font-weight: 800;
+    font-size: 4rem!important;
+}
+
 #mainTable { margin: 40px auto; border-spacing: 20px; }
 #battleNumber { font-size: 20px; color: #147c88; padding-bottom: 20px; text-align: center; }
 #leftField, #rightField {
@@ -132,7 +137,7 @@ color: #ffffff; font-family: 'Comfortaa', cursive; text-align: center; }
 /* CHANGE: Hover Color of Middle Button */
 .middleField:hover { background: #147c88; color: #ffffff; }
 .header-container { margin: 50px 0; }
-.album-title { font-size: 42px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 5px; }
+.album-title { font-size: 42px; letter-spacing: 4px; margin-bottom: 5px; }
 /* "select which song..." Color */
 .instructions-text { color: #a2c9a8; font-size: 16px; }
 .note { color: #a2c9a8; font-style: italic; display: block; margin-top: 10px; }
