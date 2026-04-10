@@ -23,7 +23,7 @@
         --bg-color: #1c1c1c;         /* Page Background */
         --header-color: #e097d9;     /* Main Album Title Color */
         --battle-num-color: #e097d9; /* Showdown # Color */
-        --glow-color: #147c88;       /* Glow effect on hover */
+        --glow-color: #e097d9;       /* Glow effect on hover */
         
         /* MIDDLE BUTTONS */
         --btn-bg: #1c1c1c;           /* Middle button background */
@@ -38,6 +38,11 @@
 
         /* IMAGES */
         --album-cover: url('https://upload.wikimedia.org/wikipedia/en/f/fd/Short_n%27_Sweet_-_Sabrina_Carpenter.png');
+        
+        /* LOGO SETUP */
+        --logo-link: url("https://www.pngkey.com/png/full/220-2201187_sabrina-carpenter-logo-transparent.png");
+        --logo-width: 400px;
+        --logo-height: 80px;
     }
 
     /* ---------------------------------------------------------
@@ -51,11 +56,25 @@
         font-family: var(--body-font); 
         text-align: center; 
     }
+    
+    /* THE LOGO */
+    .main-logo {
+        width: var(--logo-width);
+        height: var(--logo-height);
+        background-image: var(--logo-link);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 20px auto;
+        display: block;
+        filter: invert(100%);
+    }
 
     h1.album-title {
         font-family: var(--header-font);
         font-weight: var(--header-weight);
         font-size: var(--header-size);
+        margin-top: 0;
         margin-bottom: 5px;
     }
 
@@ -72,7 +91,7 @@
         background-image: var(--album-cover);
         background-size: cover; background-position: center; 
         position: relative; cursor: pointer;
-        font-size: 26px; font-weight: 800; 
+        font-size: 22px; font-weight: 800; 
         color: #e097d9 !important; text-shadow: 0 0 10px #000; 
         z-index: 5; transition: 0.3s;
     }
@@ -99,7 +118,7 @@
         color: var(--btn-hover-text); 
     }
 
-    .header-container { margin: 50px 0; }
+    .header-container { margin: 40px 0; }
     .instructions-text { color: var(--instr-color); font-size: 16px; }
     .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
     #mainTable { margin: 40px auto; border-spacing: 20px; }
@@ -208,6 +227,8 @@
 
 <body>
 <div class="header-container">
+    <div class="main-logo">
+    </div>
     <!-- 3. ALBUM TITLE -->
     <h1 class="album-title">SHORT N' SWEET</h1>
     <p class="instructions-text">
