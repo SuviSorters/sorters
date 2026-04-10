@@ -40,6 +40,11 @@
 
         /* IMAGES */
         --album-cover: url('');
+
+        /* LOGO SETUP */
+        --logo-link: url("");
+        --logo-width: 400px;
+        --logo-height: 50px;
     }
 
     /* ---------------------------------------------------------
@@ -54,10 +59,23 @@
         text-align: center; 
     }
 
+    /* THE LOGO */
+    .main-logo {
+        width: var(--logo-width);
+        height: var(--logo-height);
+        background-image: var(--logo-link);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 20px auto;
+        display: block;
+    }
+
     h1.album-title {
         font-family: var(--header-font);
         font-weight: var(--header-weight);
         font-size: var(--header-size);
+        margin-top: 0;
         margin-bottom: 5px;
     }
 
@@ -101,7 +119,7 @@
         color: var(--btn-hover-text); 
     }
 
-    .header-container { margin: 50px 0; }
+    .header-container { margin: 40px 0; }
     .instructions-text { color: var(--instr-color); font-size: 16px; }
     .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
     #mainTable { margin: 40px auto; border-spacing: 20px; }
@@ -200,6 +218,7 @@
 
 <body>
 <div class="header-container">
+    <div class="main-logo"></div>
     <!-- 3. ALBUM TITLE -->
     <h1 class="album-title">Album Title</h1>
     <p class="instructions-text">
