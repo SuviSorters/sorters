@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- a) Replace the labelled sections directly below.
+     b) Press ctrl+F and type in "2." There you can list the songs.
+     c) Press ctrl+F and type in "3." there you can write the album title.
+    -->
+    <meta charset="utf-8">
+    <title>The Mountain Sorter</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Rampart+One&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <style type="text/css">
+    :root {
+        /* FONT STYLES */
+        --header-font: "Rampart One", sans-serif;
+        --body-font: 'Comfortaa', sans-serif;
+        --header-size: 4rem;
+        --header-weight: 800;
+
+        /* COLORS */
+        --bg-color: #1c1c1c;
+        --header-color: #eec454;
+        --battle-num-color: #eec454;
+        --glow-color: #eec454;
+        
+        /* MIDDLE BUTTONS */
+        --btn-bg: #1c1c1c;
+        --btn-text: #4A8273;
+        --btn-hover-bg: #4A8273;
+        --btn-hover-text: #ffffff;
+        --btn-outline: #4A8273;
+
+        /* TEXT SECTIONS */
+        --instr-color: #bbbbbb;
+        --note-color: #4A8273;
+
+        /* IMAGES */
+        --album-cover: url('https://upload.wikimedia.org/wikipedia/en/d/de/Gorillaz_-_The_Mountain.png');
+        
+        /* LOGO SETUP */
+        --logo-link: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/64ecef39-bee4-4348-aee6-0909c8bcfa5f/dd7i232-90045d68-267e-49be-a950-e51eff2157a6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi82NGVjZWYzOS1iZWU0LTQzNDgtYWVlNi0wOTA5YzhiY2ZhNWYvZGQ3aTIzMi05MDA0NWQ2OC0yNjdlLTQ5YmUtYTk1MC1lNTFlZmYyMTU3YTYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.eDQSE96LacpD3s0x7kao88NBVOmFqalY5_7aCHpWTtQ");
+        --logo-width: 400px;
+        --logo-height: 50px;
+    }
+
+    body { 
+        background-color: var(--bg-color); 
+        color: var(--header-color); 
+        font-family: var(--body-font); 
+        text-align: center; 
+    }
+
+    /* THE LOGO */
+    .main-logo {
+        width: var(--logo-width);
+        height: var(--logo-height);
+        background-image: var(--logo-link);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 20px auto;
+        display: block;
+    }
+
+    h1.album-title {
+        font-family: var(--header-font);
+        font-weight: var(--header-weight);
+        font-size: var(--header-size);
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+
+    #battleNumber { 
+        font-size: 20px; 
+        color: var(--battle-num-color); 
+        padding-bottom: 20px; 
+    }
+
+    #leftField, #rightField {
+        width: 250px; height: 250px; display: table-cell; 
+        vertical-align: middle; text-align: center;
+        border-radius: 40px; 
+        background-image: var(--album-cover);
+        background-size: cover; background-position: center; 
+        position: relative; cursor: pointer;
+        font-size: 26px; font-weight: 800; 
+        color: #FFFFFF !important; text-shadow: 0 0 10px #000; 
+        z-index: 5; transition: 0.3s;
+    }
+
+    #leftField:hover, #rightField:hover { 
+        transform: scale(1.03); 
+        box-shadow: 0 0 30px var(--glow-color); 
+    }
+
+    #leftField::before, #rightField::before {
+        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1;
+    }
+
+    .middleField {
+        width: 150px; height: 80px; 
+        border: 4px solid var(--btn-outline); border-radius: 20px; 
+        background: var(--btn-bg); color: var(--btn-text); 
+        cursor: pointer; transition: 0.3s;
+    }
+
+    .middleField:hover { 
+        background: var(--btn-hover-bg); 
+        color: var(--btn-hover-text); 
+    }
+
+    .header-container { margin: 40px 0; }
+    .instructions-text { color: var(--instr-color); font-size: 16px; }
+    .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
+    #mainTable { margin: 40px auto; border-spacing: 20px; }
+    </style>
+
+    <script type="text/javascript">
+        // 2. SONG LIST SETUP
+        var namMember = [
+            "The Mountain", "The Moon Cave", "The Happy Dictator", "The Hardest Thing",
+            "Orange County", "The God of Lying", "The Empty Dream Machine", "The Manifesto",
+            "The Plastic Guru", "Delirium", "Damascus", "The Shadowy Light", "Casablanca",
+            "The Sweet Prince", "The Sad God"
+        ];
+
+        // === Logic Engine (No need to edit) ---
+        var lstMember = [], parent = [], equal = [], rec = [];
+        var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
+
+        function initList(){
+            var n = 0, mid, i;
+            lstMember[n] = [];
+            for (i=0; i<namMember.length; i++) { lstMember[n][i] = i; }
+            parent[n] = -1; totalSize = 0; n++;
+            for (i=0; i<lstMember.length; i++) {
+                if(lstMember[i].length>=2) {
+                    mid = Math.ceil(lstMember[i].length/2);
+                    lstMember[n] = lstMember[i].slice(0,mid); totalSize += lstMember[n].length; parent[n] = i; n++;
+                    lstMember[n] = lstMember[i].slice(mid,lstMember[i].length); totalSize += lstMember[n].length; parent[n] = i; n++;
+                }
+            }
+            for (i=0; i<namMember.length; i++) { rec[i] = 0; }
+            nrec = 0;
+            for (i=0; i<=namMember.length; i++) { equal[i] = -1; }
+            cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;
+            head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0;
+        }
+
+        function sortList(flag){
+            if (finishFlag) return;
+            if (flag<0) {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (flag>0) {
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            } else {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+                equal[rec[nrec-1]] = lstMember[cmp2][head2];
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                while (head1<lstMember[cmp1].length){ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) {
+                while (head2<lstMember[cmp2].length){ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                for (var i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) { lstMember[parent[cmp1]][i] = rec[i]; }
+                lstMember.pop(); lstMember.pop();
+                cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;
+                if (head1==0 && head2==0) { for (i=0; i<namMember.length; i++) { rec[i] = 0; } nrec = 0; }
+            }
+            if (cmp1<0) {
+                document.getElementById("battleNumber").innerHTML = "Showdown #"+(numQuestion-1)+"<br>100% sorted.";
+                showResult(); finishFlag = 1;
+            } else { showImage(); }
+        }
+
+        function showResult() {
+            var ranking = 1, sameRank = 1, str = "", i;
+            str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-outline); color:white; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:white; padding:10px;'>Song<\/td><\/tr>";
+            for (i=0; i<namMember.length; i++) {
+                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
+                if (i<namMember.length-1) {
+                    if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
+                }
+            }
+            str += "<\/table>";
+            document.getElementById("resultField").innerHTML = str;
+        }
+
+        function skipQuestion() {
+            if (finishFlag) return;
+            var randomChoice = Math.random() < 0.5 ? -1 : 1;
+            sortList(randomChoice);
+        }
+
+        function showImage() {
+            document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
+            document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
+            document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
+            numQuestion++;
+        }
+    </script>
+</head>
+
+<body>
+<div class="header-container">
+    <div class="main-logo"></div>
+    <!-- 3. ALBUM TITLE -->
+    <h1 class="album-title">The Mountain</h1>
+    <p class="instructions-text">
+        Select which song you like better to get an accurate list.<br>
+        <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
+    </p>
+</div>
+
+<table id="mainTable" align="center">
+    <tr><td id="battleNumber" colspan="3">Showdown #1<br>0% sorted.</td></tr>
+    <tr>
+        <td id="leftField" onclick="sortList(-1)"></td>
+        <td class="middleField" onclick="sortList(0)">I like both</td>
+        <td id="rightField" onclick="sortList(1)"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td class="middleField" onclick="skipQuestion()">no opinion</td>
+        <td></td>
+    </tr>
+</table>
+<div id="resultField"></div>
+
+<script type="text/javascript">
+    initList();
+    showImage();
+</script>
+</body>
+</html>
