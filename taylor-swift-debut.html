@@ -11,15 +11,10 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap" rel="stylesheet">
-
     <style type="text/css">
     :root {
         /* FONT STYLES */
-        --header-font: 'Cedarville Cursive', cursive;
         --body-font: 'Comfortaa', sans-serif;
-        --header-size: 4rem;
-        --header-weight: 800;
 
         /* COLORS */
         --bg-color: #1c1c1c;         /* Page Background */
@@ -40,6 +35,11 @@
 
         /* IMAGES */
         --album-cover: url('https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png');
+        
+        /* LOGO SETUP */
+        --logo-link: url("https://upload.wikimedia.org/wikipedia/commons/6/6e/TaylorSwiftAlbum2006.png");
+        --logo-width: 600px;
+        --logo-height: 100px;
     }
 
     /* ---------------------------------------------------------
@@ -53,12 +53,18 @@
         font-family: var(--body-font); 
         text-align: center; 
     }
-
-    h1.album-title {
-        font-family: var(--header-font);
-        font-weight: var(--header-weight);
-        font-size: var(--header-size);
-        margin-bottom: 5px;
+    
+        /* THE LOGO */
+    .main-logo {
+        width: var(--logo-width);
+        height: var(--logo-height);
+        background-image: var(--logo-link);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 20px auto;
+        display: block;
+        filter: invert(100%);
     }
 
     #battleNumber { 
@@ -74,7 +80,7 @@
         background-image: var(--album-cover);
         background-size: cover; background-position: center; 
         position: relative; cursor: pointer;
-        font-size: 26px; font-weight: 800; 
+        font-size: 22px; font-weight: 800; 
         color: #FFFFFF !important; text-shadow: 0 0 10px #000; 
         z-index: 5; transition: 0.3s;
     }
@@ -212,9 +218,8 @@
 
 <body>
 <div class="header-container">
-    <!-- 3. ALBUM TITLE -->
-    <h1 class="album-title">Taylor Swift</h1>
-    <p class="instructions-text">
+    <div class="main-logo"></div>
+        <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
     </p>
