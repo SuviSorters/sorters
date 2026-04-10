@@ -1,148 +1,215 @@
 <!DOCTYPE html>
 <html>
-    <!-- 
-    QUICK SEARCH & REPLACE GUIDE:
-    CHANGE          -> Elements to change manually
-    BACKGROUNDIMAGE -> Direct link to the album cover image
-    COLOR1          -> Main accent (Results table header, "Showdown" text)
-    COLOR2          -> Secondary accent (Buttons and Note text)
-    COLOR3          -> Page background color
--->
 <head>
-<meta charset="utf-8">
-<!-- CHANGE: Short N' Sweet -->
-<title>Short N' Sweet Sorter</title>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+<!-- a) Replace the labelled sections directly below.
+     b) Press ctrl+F and type in "2." There you can list the songs.
+     c) Press ctrl+F and type in "3." there you can write the album title.
+    -->
+    <meta charset="utf-8">
+    
+    <title>Short N' Sweet Sorter</title>
 
-<script type="text/javascript">
-    // -- CHANGE: SONG TITLES --
-var namMember = ["Taste", "Please Please Please", "Good Graces", "Sharpest Tool", "Coincidence", "Bed Chem", "Espresso", "Dumb & Poetic", "Slim Pickins", "Juno", "Lie to Girls", "Don't Smile"];
-var lstMember = [], parent = [], equal = [], rec = [];
-var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
+    
+    <style type="text/css">
+    :root {
+        /* FONT STYLES */
+        --header-font: 'Comfortaa', cursive;
+        --body-font: 'Comfortaa', sans-serif;
+        --header-size: 3rem;
+        --header-weight: 800;
 
-function initList(){
-    var n = 0, mid, i;
-    lstMember[n] = [];
-    for (i=0; i<namMember.length; i++) { lstMember[n][i] = i; }
-    parent[n] = -1; totalSize = 0; n++;
-    for (i=0; i<lstMember.length; i++) {
-        if(lstMember[i].length>=2) {
-            mid = Math.ceil(lstMember[i].length/2);
-            lstMember[n] = lstMember[i].slice(0,mid); totalSize += lstMember[n].length; parent[n] = i; n++;
-            lstMember[n] = lstMember[i].slice(mid,lstMember[i].length); totalSize += lstMember[n].length; parent[n] = i; n++;
+        /* COLORS */
+        --bg-color: #1c1c1c;         /* Page Background */
+        --header-color: #e097d9;     /* Main Album Title Color */
+        --battle-num-color: #e097d9; /* Showdown # Color */
+        --glow-color: #147c88;       /* Glow effect on hover */
+        
+        /* MIDDLE BUTTONS */
+        --btn-bg: #1c1c1c;           /* Middle button background */
+        --btn-text: #79a2c9;         /* Middle button text */
+        --btn-hover-bg: #79a2c9;     /* Middle button hover background */
+        --btn-hover-text: #ffffff;   /* Middle button hover text */
+        --btn-outline: #79a2c9;      /* Middle button outline */
+
+        /* TEXT SECTIONS */
+        --instr-color: #bbbbbb;      /* "Select which song..." color */
+        --note-color: #79a2c9;       /* The italicized note color */
+
+        /* IMAGES */
+        --album-cover: url('https://upload.wikimedia.org/wikipedia/en/f/fd/Short_n%27_Sweet_-_Sabrina_Carpenter.png');
+    }
+
+    /* ---------------------------------------------------------
+       DO NOT FEEL THE NEED TO EDIT BELOW THIS LINE 
+       (Unless you want to change the layout)
+    --------------------------------------------------------- */
+    
+    body { 
+        background-color: var(--bg-color); 
+        color: var(--header-color); 
+        font-family: var(--body-font); 
+        text-align: center; 
+    }
+
+    h1.album-title {
+        font-family: var(--header-font);
+        font-weight: var(--header-weight);
+        font-size: var(--header-size);
+        margin-bottom: 5px;
+    }
+
+    #battleNumber { 
+        font-size: 20px; 
+        color: var(--battle-num-color); 
+        padding-bottom: 20px; 
+    }
+
+    #leftField, #rightField {
+        width: 250px; height: 250px; display: table-cell; 
+        vertical-align: middle; text-align: center;
+        border-radius: 40px; 
+        background-image: var(--album-cover);
+        background-size: cover; background-position: center; 
+        position: relative; cursor: pointer;
+        font-size: 26px; font-weight: 800; 
+        color: #e097d9 !important; text-shadow: 0 0 10px #000; 
+        z-index: 5; transition: 0.3s;
+    }
+
+    #leftField:hover, #rightField:hover { 
+        transform: scale(1.03); 
+        box-shadow: 0 0 30px var(--glow-color); 
+    }
+
+    #leftField::before, #rightField::before {
+        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1;
+    }
+
+    .middleField {
+        width: 150px; height: 80px; 
+        border: 4px solid var(--btn-outline); border-radius: 20px; 
+        background: var(--btn-bg); color: var(--btn-text); 
+        cursor: pointer; transition: 0.3s;
+    }
+
+    .middleField:hover { 
+        background: var(--btn-hover-bg); 
+        color: var(--btn-hover-text); 
+    }
+
+    .header-container { margin: 50px 0; }
+    .instructions-text { color: var(--instr-color); font-size: 16px; }
+    .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
+    #mainTable { margin: 40px auto; border-spacing: 20px; }
+    </style>
+
+    <script type="text/javascript">
+        // 2. SONG LIST SETUP
+        var namMember = [
+            "Taste",
+            "Please Please Please", 
+            "Good Graces", 
+            "Sharpest Tool", 
+            "Coincidence", 
+            "Bed Chem", 
+            "Espresso", 
+            "Dumb & Poetic", 
+            "Slim Pickins", 
+            "Juno", 
+            "Lie to Girls", 
+            "Don't Smile"
+        ];
+
+        // --- Logic Engine (No need to edit) ---
+        var lstMember = [], parent = [], equal = [], rec = [];
+        var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
+
+        function initList(){
+            var n = 0, mid, i;
+            lstMember[n] = [];
+            for (i=0; i<namMember.length; i++) { lstMember[n][i] = i; }
+            parent[n] = -1; totalSize = 0; n++;
+            for (i=0; i<lstMember.length; i++) {
+                if(lstMember[i].length>=2) {
+                    mid = Math.ceil(lstMember[i].length/2);
+                    lstMember[n] = lstMember[i].slice(0,mid); totalSize += lstMember[n].length; parent[n] = i; n++;
+                    lstMember[n] = lstMember[i].slice(mid,lstMember[i].length); totalSize += lstMember[n].length; parent[n] = i; n++;
+                }
+            }
+            for (i=0; i<namMember.length; i++) { rec[i] = 0; }
+            nrec = 0;
+            for (i=0; i<=namMember.length; i++) { equal[i] = -1; }
+            cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;
+            head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0;
         }
-    }
-    for (i=0; i<namMember.length; i++) { rec[i] = 0; }
-    nrec = 0;
-    for (i=0; i<=namMember.length; i++) { equal[i] = -1; }
-    cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;
-    head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0;
-}
 
-function sortList(flag){
-    if (finishFlag) return;
-    if (flag<0) {
-        rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
-        while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
-    } else if (flag>0) {
-        rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
-        while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
-    } else {
-        rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
-        while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
-        equal[rec[nrec-1]] = lstMember[cmp2][head2];
-        rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
-        while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
-    }
-    if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) {
-        while (head1<lstMember[cmp1].length){ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
-    } else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) {
-        while (head2<lstMember[cmp2].length){ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
-    }
-    if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) {
-        for (var i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) { lstMember[parent[cmp1]][i] = rec[i]; }
-        lstMember.pop(); lstMember.pop();
-        cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;
-        if (head1==0 && head2==0) { for (i=0; i<namMember.length; i++) { rec[i] = 0; } nrec = 0; }
-    }
-    if (cmp1<0) {
-        document.getElementById("battleNumber").innerHTML = "Showdown #"+(numQuestion-1)+"<br>100% sorted.";
-        showResult(); finishFlag = 1;
-    } else { showImage(); }
-}
-
-function showResult() {
-    var ranking = 1, sameRank = 1, str = "", i;
-    str += "<table style='width:300px; font-family:Comfortaa; color:#fff; margin:20px auto; border-collapse:collapse;'>";
-    str += "<tr><td style='background:#e097d9; padding:10px;'>Rank<\/td><td style='background:#e097d9; padding:10px;'>Song<\/td><\/tr>";
-    for (i=0; i<namMember.length; i++) {
-        str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
-        if (i<namMember.length-1) {
-            if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
+        function sortList(flag){
+            if (finishFlag) return;
+            if (flag<0) {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (flag>0) {
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            } else {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+                equal[rec[nrec-1]] = lstMember[cmp2][head2];
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                while (head1<lstMember[cmp1].length){ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) {
+                while (head2<lstMember[cmp2].length){ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                for (var i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) { lstMember[parent[cmp1]][i] = rec[i]; }
+                lstMember.pop(); lstMember.pop();
+                cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;
+                if (head1==0 && head2==0) { for (i=0; i<namMember.length; i++) { rec[i] = 0; } nrec = 0; }
+            }
+            if (cmp1<0) {
+                document.getElementById("battleNumber").innerHTML = "Showdown #"+(numQuestion-1)+"<br>100% sorted.";
+                showResult(); finishFlag = 1;
+            } else { showImage(); }
         }
-    }
-    str += "<\/table>";
-    document.getElementById("resultField").innerHTML = str;
-}
 
-function skipQuestion() {
-    if (finishFlag) return;
-    // Math.random() picks a number between 0 and 1. 
-    // If it's less than 0.5, we pick -1 (left). Otherwise, we pick 1 (right).
-    var randomChoice = Math.random() < 0.5 ? -1 : 1;
-    sortList(randomChoice);
-}
+        function showResult() {
+            var ranking = 1, sameRank = 1, str = "", i;
+            str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-bg); color:var(--btn-text); padding:10px;'>Rank<\/td><td style='background:var(--btn-bg); color:var(--btn-text); padding:10px;'>Song<\/td><\/tr>";
+            for (i=0; i<namMember.length; i++) {
+                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
+                if (i<namMember.length-1) {
+                    if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
+                }
+            }
+            str += "<\/table>";
+            document.getElementById("resultField").innerHTML = str;
+        }
 
+        function skipQuestion() {
+            if (finishFlag) return;
+            var randomChoice = Math.random() < 0.5 ? -1 : 1;
+            sortList(randomChoice);
+        }
 
-function showImage() {
-    document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
-    document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
-    document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
-    numQuestion++;
-}
-</script>
-
-<style type="text/css">
-body { background-color: #1c1c1c; 
-/* CHANGE: Color of Title, Showdown, and Middle Options */
-color: #e097d9; font-family: 'Comfortaa', cursive; text-align: center; }
-#mainTable { margin: 40px auto; border-spacing: 20px; }
-#battleNumber { font-size: 20px; color: #e097d9; padding-bottom: 20px; text-align: center; }
-#leftField, #rightField {
-    width: 250px; height: 250px; display: table-cell; vertical-align: middle; text-align: center;
-    border-radius: 40px; 
-    background-image: url('https://upload.wikimedia.org/wikipedia/en/f/fd/Short_n%27_Sweet_-_Sabrina_Carpenter.png');
-    background-size: cover; background-position: center; position: relative; cursor: pointer;
-    font-size: 26px; font-weight: 800; 
-        /* -- CHANGE: Optional Song Title Color -- */
-    color: #e097d9 !important; text-shadow: 0 0 10px #000; z-index: 5; transition: 0.3s;
-}
-#leftField:hover, #rightField:hover { transform: scale(1.03); box-shadow: 0 0 
-/* -- CHANGE: RGB format of COLOR1 -- */
-    30px rgba(224, 151, 217, 0.6); }
-#leftField::before, #rightField::before {
-    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1;
-}
-.middleField {
-    /* -- CHANGE: Border Color of Middle Button */
-    width: 150px; height: 80px; border: 2px solid #79a2c9; border-radius: 20px; background: #1c1c1c; 
-    /* -- CHANGE: Color of Middle Button Text -- */
-    color: #79a2c9; cursor: pointer; transition: 0.3s;
-}
-/* CHANGE: Hover Color of Middle Button */
-.middleField:hover { background: #79a2c9; color: #fff; }
-.header-container { margin: 50px 0; }
-.album-title { font-size: 42px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 5px; }
-/* "select which song..." Color */
-.instructions-text { color: #bbbbbb; font-size: 16px; }
-.note { color: #79a2c9; font-style: italic; display: block; margin-top: 10px; }
-</style>
+        function showImage() {
+            document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
+            document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
+            document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
+            numQuestion++;
+        }
+    </script>
 </head>
 
 <body>
 <div class="header-container">
-    <!-- CHANGE: Album Title -->
-    <h1 class="album-title">Short N' Sweet</h1>
+    <!-- 3. ALBUM TITLE -->
+    <h1 class="album-title">SHORT N' SWEET</h1>
     <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
@@ -165,8 +232,8 @@ color: #e097d9; font-family: 'Comfortaa', cursive; text-align: center; }
 <div id="resultField"></div>
 
 <script type="text/javascript">
-initList();
-showImage();
+    initList();
+    showImage();
 </script>
 </body>
 </html>
