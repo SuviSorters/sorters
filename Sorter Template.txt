@@ -9,7 +9,7 @@
     
     <title>Tab Title</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
     
     <link href="HEADERFONTLINK">
 
@@ -32,6 +32,7 @@
         --btn-text: #000000;         /* Middle button text */
         --btn-hover-bg: #000000;     /* Middle button hover background */
         --btn-hover-text: #ffffff;   /* Middle button hover text */
+	--btn-outline: #ffffff;      /* Middle button outline */
 
         /* TEXT SECTIONS */
         --instr-color: #ffffff;      /* "Select which song..." color */
@@ -90,7 +91,7 @@
 
     .middleField {
         width: 150px; height: 80px; 
-        border: 2px solid var(--header-color); border-radius: 20px; 
+        border: 4px solid var(--btn-outline); border-radius: 20px; 
         background: var(--btn-bg); color: var(--btn-text); 
         cursor: pointer; transition: 0.3s;
     }
