@@ -108,7 +108,7 @@
     <script type="text/javascript">
         // 2. SONG LIST SETUP (Updated with IDs)
         // Add IDs for the rest of the songs using the same format!
-        var namMember = [
+  var namMember = [
             { name: "Tim McGraw", id: "0Om9WAB5RS09L80DyOfTNa" },
             { name: "Picture To Burn", id: "32mVHdy0bi1XKgr0ajsBlG" },
             { name: "Teardrops On My Guitar", id: "7zMcNqs55Mxer82bvZFkpg" },
@@ -122,9 +122,9 @@
             { name: "Our Song", id: "15DeqWWQB4dcEWzJg15VrN" },
             { name: "I'm Only Me When I'm With You", id: "0JIdBrXGSJXS72zjF9ss9u" },
             { name: "Invisible", id: "5OOd01o2YS1QFwdpVLds3r" },
-            { name: "A Perfectly Good Heart", id: "1spLfUJxtyVyiKKTegQ2r4" }
-            { name: "Crazier", id: "5vyxXfD5gLlyPxGZMEjtmd" }
-            { name: "Beautiful Eyes", id: "" }
+            { name: "A Perfectly Good Heart", id: "1spLfUJxtyVyiKKTegQ2r4" }, // Added comma here
+            { name: "Crazier", id: "5vyxXfD5gLlyPxGZMEjtmd" },           // Added comma here
+            { name: "Beautiful Eyes", id: "" },                         // Added comma here
             { name: "I Heart ?", id: "" }
         ];
 
@@ -205,7 +205,7 @@
             sortList(randomChoice);
         }
 
-        function showImage() {
+function showImage() {
             var leftSong = namMember[lstMember[cmp1][head1]];
             var rightSong = namMember[lstMember[cmp2][head2]];
 
@@ -215,24 +215,21 @@
             document.getElementById("leftField").innerHTML = leftSong.name;
             document.getElementById("rightField").innerHTML = rightSong.name;
             
-            // Update Previews
-            document.getElementById("leftPreview").src = `https://open.spotify.com/embed/track/${leftSong.id}`;
-            document.getElementById("rightPreview").src = `https://open.spotify.com/embed/track/${rightSong.id}`;
-
-            // Inside your showImage() function
-if (leftSong.id === "") {
-    document.getElementById("leftPreview").style.visibility = "hidden";
-} else {
-    document.getElementById("leftPreview").style.visibility = "visible";
-    document.getElementById("leftPreview").src = `https://open.spotify.com/embed/track/${leftSong.id}`;
-}
-
+            // Handle Left Preview
             if (leftSong.id === "") {
-    document.getElementById("rightPreview").style.visibility = "hidden";
-} else {
-    document.getElementById("rightPreview").style.visibility = "visible";
-    document.getElementById("rightPreview").src = `https://open.spotify.com/embed/track/${rightSong.id}`;
-}
+                document.getElementById("leftPreview").style.visibility = "hidden";
+            } else {
+                document.getElementById("leftPreview").style.visibility = "visible";
+                document.getElementById("leftPreview").src = `https://open.spotify.com/embed/track/${leftSong.id}`;
+            }
+
+            // Handle Right Preview
+            if (rightSong.id === "") {
+                document.getElementById("rightPreview").style.visibility = "hidden";
+            } else {
+                document.getElementById("rightPreview").style.visibility = "visible";
+                document.getElementById("rightPreview").src = `https://open.spotify.com/embed/track/${rightSong.id}`;
+            }
 
             numQuestion++;
         }
