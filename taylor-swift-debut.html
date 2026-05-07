@@ -1,52 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- a) Replace the labelled sections directly below.
-     b) Press ctrl+F and type in "2." There you can list the songs.
-     c) Press ctrl+F and type in "3." there you can write the album title.
-    -->
     <meta charset="utf-8">
-    
-    <title>Taylor Swift Debut Sorter</title>
-
+    <title>Song Sorter with Previews</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
     
     <style type="text/css">
     :root {
-        /* FONT STYLES */
         --body-font: 'Comfortaa', sans-serif;
-
-        /* COLORS */
-        --bg-color: #1c1c1c;         /* Page Background */
-        --header-color: #ffffff;     /* Main Album Title Color */
-        --battle-num-color: #029ac0; /* Showdown # Color */
-        --glow-color: #029ac0;       /* Glow effect on hover */
-        
-        /* MIDDLE BUTTONS */
-        --btn-bg: #1c1c1c;           /* Middle button background */
-        --btn-text: #a2c9a8;         /* Middle button text */
-        --btn-hover-bg: #a2c9a8;     /* Middle button hover background */
-        --btn-hover-text: #ffffff;   /* Middle button hover text */
-        --btn-outline: #a2c9a8;      /* Middle button outline */
-
-        /* TEXT SECTIONS */
-        --instr-color: #bbbbbb;      /* "Select which song..." color */
-        --note-color: #a2c9a8;       /* The italicized note color */
-
-        /* IMAGES */
+        --bg-color: #1c1c1c;
+        --header-color: #ffffff;
+        --battle-num-color: #029ac0;
+        --glow-color: #029ac0;
+        --btn-bg: #1c1c1c;
+        --btn-text: #a2c9a8;
+        --btn-hover-bg: #a2c9a8;
+        --btn-hover-text: #ffffff;
+        --btn-outline: #a2c9a8;
+        --instr-color: #bbbbbb;
+        --note-color: #a2c9a8;
         --album-cover: url('https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png');
-        
-        /* LOGO SETUP */
         --logo-link: url("https://upload.wikimedia.org/wikipedia/commons/6/6e/TaylorSwiftAlbum2006.png");
         --logo-width: 600px;
         --logo-height: 100px;
     }
 
-    /* ---------------------------------------------------------
-       DO NOT FEEL THE NEED TO EDIT BELOW THIS LINE 
-       (Unless you want to change the layout)
-    --------------------------------------------------------- */
-    
     body { 
         background-color: var(--bg-color); 
         color: var(--header-color); 
@@ -54,7 +32,6 @@
         text-align: center; 
     }
     
-        /* THE LOGO */
     .main-logo {
         width: var(--logo-width);
         height: var(--logo-height);
@@ -107,32 +84,50 @@
         color: var(--btn-hover-text); 
     }
 
+    /* Styling for the Spotify Preview */
+    .spotify-preview {
+        margin-top: 15px;
+        border-radius: 12px;
+    }
+
     .header-container { margin: 50px 0; }
     .instructions-text { color: var(--instr-color); font-size: 16px; }
     .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
     #mainTable { margin: 40px auto; border-spacing: 20px; }
+
+        .spotify-preview {
+    margin-top: 15px;
+    border-radius: 12px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+        
     </style>
 
     <script type="text/javascript">
-        // 2. SONG LIST SETUP
-        var namMember = [
-            "Tim McGraw",
-            "Picture To Burn",
-            "Teardrops On My Guitar",
-            "A Place In This World",
-            "Cold As You",
-            "The Outside","Tied Together With A Smile",
-            "Stay Beautiful",
-            "Should've Said No",
-            "Mary's Song (Oh My My My)",
-            "Our Song",
-            "I'm Only Me When I'm With You",
-            "Invisible",
-            "A Perfectly Good Heart",
-            "Teardrops On My Guitar (Pop Version)"
+        // 2. SONG LIST SETUP (Updated with IDs)
+        // Add IDs for the rest of the songs using the same format!
+  var namMember = [
+            { name: "Tim McGraw", id: "0Om9WAB5RS09L80DyOfTNa" },
+            { name: "Picture To Burn", id: "32mVHdy0bi1XKgr0ajsBlG" },
+            { name: "Teardrops On My Guitar", id: "7zMcNqs55Mxer82bvZFkpg" },
+            { name: "A Place In This World", id: "73OX8GdpOeGzKC6OvGSbsv" },
+            { name: "Cold As You", id: "7an1exwMnfYRcdVQm0yDev" },
+            { name: "The Outside", id: "2QA3IixpRcKyOdG7XDzRgv" },
+            { name: "Tied Together With A Smile", id: "6K0CJLVXqbGMeJSmJ4ENKK" },
+            { name: "Stay Beautiful", id: "2ZoOmCSgj0ypVAmGd1ve4y" },
+            { name: "Should've Said No", id: "16MVSD0mGI4RMQT83Qzm69" },
+            { name: "Mary's Song (Oh My My My)", id: "2QrQCMel6v2JiLxqrg4p2O" },
+            { name: "Our Song", id: "15DeqWWQB4dcEWzJg15VrN" },
+            { name: "I'm Only Me When I'm With You", id: "0JIdBrXGSJXS72zjF9ss9u" },
+            { name: "Invisible", id: "5OOd01o2YS1QFwdpVLds3r" },
+            { name: "A Perfectly Good Heart", id: "1spLfUJxtyVyiKKTegQ2r4" }, // Added comma here
+            { name: "Crazier", id: "5vyxXfD5gLlyPxGZMEjtmd" },           // Added comma here
+            { name: "Beautiful Eyes", id: "" },                         // Added comma here
+            { name: "I Heart ?", id: "" }
         ];
 
-        // --- Logic Engine (No need to edit) ---
         var lstMember = [], parent = [], equal = [], rec = [];
         var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
 
@@ -190,15 +185,18 @@
         function showResult() {
             var ranking = 1, sameRank = 1, str = "", i;
             str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
-            str += "<tr><td style='background:var(--btn-outline); color:#fffff; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
+            str += "<tr><td style='background:var(--btn-outline); color:#ffffff; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
             for (i=0; i<namMember.length; i++) {
-                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
+                // Accessing .name because namMember is now an object array
+                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
                 if (i<namMember.length-1) {
                     if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
                 }
             }
             str += "<\/table>";
             document.getElementById("resultField").innerHTML = str;
+            // Hide previews once finished
+            document.getElementById("preview-row").style.display = "none";
         }
 
         function skipQuestion() {
@@ -207,10 +205,32 @@
             sortList(randomChoice);
         }
 
-        function showImage() {
+function showImage() {
+            var leftSong = namMember[lstMember[cmp1][head1]];
+            var rightSong = namMember[lstMember[cmp2][head2]];
+
             document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
-            document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
-            document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
+            
+            // Update Labels
+            document.getElementById("leftField").innerHTML = leftSong.name;
+            document.getElementById("rightField").innerHTML = rightSong.name;
+            
+            // Handle Left Preview
+            if (leftSong.id === "") {
+                document.getElementById("leftPreview").style.visibility = "hidden";
+            } else {
+                document.getElementById("leftPreview").style.visibility = "visible";
+                document.getElementById("leftPreview").src = `https://open.spotify.com/embed/track/${leftSong.id}`;
+            }
+
+            // Handle Right Preview
+            if (rightSong.id === "") {
+                document.getElementById("rightPreview").style.visibility = "hidden";
+            } else {
+                document.getElementById("rightPreview").style.visibility = "visible";
+                document.getElementById("rightPreview").src = `https://open.spotify.com/embed/track/${rightSong.id}`;
+            }
+
             numQuestion++;
         }
     </script>
@@ -232,10 +252,14 @@
         <td class="middleField" onclick="sortList(0)">I like both</td>
         <td id="rightField" onclick="sortList(1)"></td>
     </tr>
-    <tr>
-        <td></td>
+    <tr id="preview-row">
+        <td>
+            <iframe id="leftPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
         <td class="middleField" onclick="skipQuestion()">no opinion</td>
-        <td></td>
+        <td>
+            <iframe id="rightPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
     </tr>
 </table>
 <div id="resultField"></div>
