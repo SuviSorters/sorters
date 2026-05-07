@@ -1,138 +1,90 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- a) Replace the labelled sections directly below.
-     b) Press ctrl+F and type in "2." There you can list the songs.
-     c) Press ctrl+F and type in "3." there you can write the album title.
-    -->
     <meta charset="utf-8">
-    
-    <title>Tab Title</title>
-
+    <title>Song Sorter Template</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
     
-    <link href="HEADERFONTLINK">
-
     <style type="text/css">
+    /* =========================================================
+       1. VISUAL SETTINGS (Change these for each album!)
+    ========================================================= */
     :root {
-        /* FONT STYLES */
-        --header-font: "FONTNAME", cursive;
         --body-font: 'Comfortaa', sans-serif;
-        --header-size: 5rem;
-        --header-weight: 800;
-
-        /* COLORS */
         --bg-color: #1c1c1c;         /* Page Background */
-        --header-color: #ffffff;     /* Main Album Title Color */
-        --battle-num-color: #ffffff; /* Showdown # Color */
-        --glow-color: #ffffff;       /* Glow effect on hover */
+        --header-color: #ffffff;     /* Text Color */
+        --accent-color: #029ac0;     /* Showdown # and Glow Color */
         
-        /* MIDDLE BUTTONS */
-        --btn-bg: #ffffff;           /* Middle button background */
-        --btn-text: #000000;         /* Middle button text */
-        --btn-hover-bg: #000000;     /* Middle button hover background */
-        --btn-hover-text: #ffffff;   /* Middle button hover text */
-	--btn-outline: #ffffff;      /* Middle button outline */
-
-        /* TEXT SECTIONS */
-        --instr-color: #ffffff;      /* "Select which song..." color */
-        --note-color: #ffffff;       /* The italicized note color */
+        /* BUTTONS */
+        --btn-bg: #1c1c1c;
+        --btn-text: #a2c9a8;
+        --btn-outline: #a2c9a8;
+        --btn-hover-bg: #a2c9a8;
+        --btn-hover-text: #ffffff;
 
         /* IMAGES */
-        --album-cover: url('');
-
-        /* LOGO SETUP */
-        --logo-link: url("");
-        --logo-width: 400px;
-        --logo-height: 50px;
+        --album-cover: url('https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png');
+        --logo-link: url("https://upload.wikimedia.org/wikipedia/commons/6/6e/TaylorSwiftAlbum2006.png");
+        --logo-width: 600px;
+        --logo-height: 100px;
     }
 
-    /* ---------------------------------------------------------
-       DO NOT FEEL THE NEED TO EDIT BELOW THIS LINE 
-       (Unless you want to change the layout)
-    --------------------------------------------------------- */
+    /* =========================================================
+       CORE STYLES (Usually don't need to touch these)
+    ========================================================= */
+    body { background-color: var(--bg-color); color: var(--header-color); font-family: var(--body-font); text-align: center; }
+    .main-logo { width: var(--logo-width); height: var(--logo-height); background-image: var(--logo-link); background-size: contain; background-repeat: no-repeat; background-position: center; margin: 0 auto 20px auto; display: block; filter: invert(100%); }
+    #battleNumber { font-size: 20px; color: var(--accent-color); padding-bottom: 20px; }
     
-    body { 
-        background-color: var(--bg-color); 
-        color: var(--header-color); 
-        font-family: var(--body-font); 
-        text-align: center; 
-    }
-
-    /* THE LOGO */
-    .main-logo {
-        width: var(--logo-width);
-        height: var(--logo-height);
-        background-image: var(--logo-link);
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        margin: 0 auto 20px auto;
-        display: block;
-    }
-
-    h1.album-title {
-        font-family: var(--header-font);
-        font-weight: var(--header-weight);
-        font-size: var(--header-size);
-        margin-top: 0;
-        margin-bottom: 5px;
-    }
-
-    #battleNumber { 
-        font-size: 20px; 
-        color: var(--battle-num-color); 
-        padding-bottom: 20px; 
-    }
-
     #leftField, #rightField {
-        width: 250px; height: 250px; display: table-cell; 
-        vertical-align: middle; text-align: center;
-        border-radius: 40px; 
-        background-image: var(--album-cover);
-        background-size: cover; background-position: center; 
-        position: relative; cursor: pointer;
-        font-size: 22px; font-weight: 800; 
-        color: #FFFFFF !important; text-shadow: 0 0 10px #000; 
-        z-index: 5; transition: 0.3s;
+        width: 250px; height: 250px; display: table-cell; vertical-align: middle; text-align: center;
+        border-radius: 40px; background-image: var(--album-cover); background-size: cover; background-position: center; 
+        position: relative; cursor: pointer; font-size: 22px; font-weight: 800; color: #FFFFFF !important; 
+        text-shadow: 0 0 10px #000; z-index: 5; transition: 0.3s;
     }
 
-    #leftField:hover, #rightField:hover { 
-        transform: scale(1.03); 
-        box-shadow: 0 0 30px var(--glow-color); 
-    }
+    #leftField:hover, #rightField:hover { transform: scale(1.03); box-shadow: 0 0 30px var(--accent-color); }
+    #leftField::before, #rightField::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1; }
 
-    #leftField::before, #rightField::before {
-        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1;
-    }
+    .middleField { width: 150px; height: 80px; border: 4px solid var(--btn-outline); border-radius: 20px; background: var(--btn-bg); color: var(--btn-text); cursor: pointer; transition: 0.3s; }
+    .middleField:hover { background: var(--btn-hover-bg); color: var(--btn-hover-text); }
 
-    .middleField {
-        width: 150px; height: 80px; 
-        border: 4px solid var(--btn-outline); border-radius: 20px; 
-        background: var(--btn-bg); color: var(--btn-text); 
-        cursor: pointer; transition: 0.3s;
-    }
+    .spotify-preview { margin-top: 15px; border-radius: 12px; display: block; margin-left: auto; margin-right: auto; transition: 0.3s; }
+    .spotify-preview:hover { box-shadow: 0 0 20px var(--accent-color); }
 
-    .middleField:hover { 
-        background: var(--btn-hover-bg); 
-        color: var(--btn-hover-text); 
-    }
-
-    .header-container { margin: 40px 0; }
-    .instructions-text { color: var(--instr-color); font-size: 16px; }
-    .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
+    .header-container { margin: 50px 0; }
+    .instructions-text { color: #bbbbbb; font-size: 16px; }
+    .note { color: var(--btn-text); font-style: italic; display: block; margin-top: 10px; }
     #mainTable { margin: 40px auto; border-spacing: 20px; }
     </style>
 
     <script type="text/javascript">
-        // 2. SONG LIST SETUP
+        /* =========================================================
+           2. SONG DATA (Add/Remove songs here)
+        ========================================================= */
         var namMember = [
-            "", 
-            ""
+            { name: "Tim McGraw", id: "0Om9WAB5RS09L80DyOfTNa" },
+            { name: "Picture To Burn", id: "32mVHdy0bi1XKgr0ajsBlG" },
+            { name: "Teardrops On My Guitar", id: "7zMcNqs55Mxer82bvZFkpg" },
+            { name: "A Place In This World", id: "73OX8GdpOeGzKC6OvGSbsv" },
+            { name: "Cold As You", id: "7an1exwMnfYRcdVQm0yDev" },
+            { name: "The Outside", id: "2QA3IixpRcKyOdG7XDzRgv" },
+            { name: "Tied Together With A Smile", id: "6K0CJLVXqbGMeJSmJ4ENKK" },
+            { name: "Stay Beautiful", id: "2ZoOmCSgj0ypVAmGd1ve4y" },
+            { name: "Should've Said No", id: "16MVSD0mGI4RMQT83Qzm69" },
+            { name: "Mary's Song (Oh My My My)", id: "2QrQCMel6v2JiLxqrg4p2O" },
+            { name: "Our Song", id: "15DeqWWQB4dcEWzJg15VrN" },
+            { name: "I'm Only Me When I'm With You", id: "0JIdBrXGSJXS72zjF9ss9u" },
+            { name: "Invisible", id: "5OOd01o2YS1QFwdpVLds3r" },
+            { name: "A Perfectly Good Heart", id: "1spLfUJxtyVyiKKTegQ2r4" },
+            { name: "Crazier", id: "5vyxXfD5gLlyPxGZMEjtmd" },
+            { name: "Beautiful Eyes", id: "" },
+            { name: "I Heart ?", id: "" }
         ];
 
-        // --- Logic Engine (No need to edit) ---
+        /* =========================================================
+           3. LOGIC ENGINE (Safe to ignore)
+        ========================================================= */
         var lstMember = [], parent = [], equal = [], rec = [];
         var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
 
@@ -189,16 +141,17 @@
 
         function showResult() {
             var ranking = 1, sameRank = 1, str = "", i;
-            str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
-            str += "<tr><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
+            str += "<table style='width:350px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-outline); color:#ffffff; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
             for (i=0; i<namMember.length; i++) {
-                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
+                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
                 if (i<namMember.length-1) {
                     if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
                 }
             }
             str += "<\/table>";
             document.getElementById("resultField").innerHTML = str;
+            document.getElementById("mainTable").style.display = "none";
         }
 
         function skipQuestion() {
@@ -208,10 +161,27 @@
         }
 
         function showImage() {
+            var leftSong = namMember[lstMember[cmp1][head1]];
+            var rightSong = namMember[lstMember[cmp2][head2]];
+
             document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
-            document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
-            document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
+            document.getElementById("leftField").innerHTML = leftSong.name;
+            document.getElementById("rightField").innerHTML = rightSong.name;
+            
+            updatePlayer("leftPreview", leftSong.id);
+            updatePlayer("rightPreview", rightSong.id);
+
             numQuestion++;
+        }
+
+        function updatePlayer(elementId, songId) {
+            var player = document.getElementById(elementId);
+            if (songId === "") {
+                player.style.visibility = "hidden";
+            } else {
+                player.style.visibility = "visible";
+                player.src = `https://open.spotify.com/embed/track/${songId}`;
+            }
         }
     </script>
 </head>
@@ -219,8 +189,6 @@
 <body>
 <div class="header-container">
     <div class="main-logo"></div>
-    <!-- 3. ALBUM TITLE -->
-    <h1 class="album-title">Album Title</h1>
     <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
@@ -234,12 +202,13 @@
         <td class="middleField" onclick="sortList(0)">I like both</td>
         <td id="rightField" onclick="sortList(1)"></td>
     </tr>
-    <tr>
-        <td></td>
+    <tr id="preview-row">
+        <td><iframe id="leftPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe></td>
         <td class="middleField" onclick="skipQuestion()">no opinion</td>
-        <td></td>
+        <td><iframe id="rightPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe></td>
     </tr>
 </table>
+
 <div id="resultField"></div>
 
 <script type="text/javascript">
