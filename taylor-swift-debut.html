@@ -193,10 +193,9 @@
                     if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
                 }
             }
-            str += "<\/table>";
+              str += "<\/table>";
             document.getElementById("resultField").innerHTML = str;
-            // Hide previews once finished
-            document.getElementById("preview-row").style.display = "none";
+            document.getElementById("mainTable").style.display = "none";
         }
 
         function skipQuestion() {
@@ -205,33 +204,28 @@
             sortList(randomChoice);
         }
 
-function showImage() {
+        function showImage() {
             var leftSong = namMember[lstMember[cmp1][head1]];
             var rightSong = namMember[lstMember[cmp2][head2]];
 
             document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
-            
-            // Update Labels
             document.getElementById("leftField").innerHTML = leftSong.name;
             document.getElementById("rightField").innerHTML = rightSong.name;
             
-            // Handle Left Preview
-            if (leftSong.id === "") {
-                document.getElementById("leftPreview").style.visibility = "hidden";
-            } else {
-                document.getElementById("leftPreview").style.visibility = "visible";
-                document.getElementById("leftPreview").src = `https://open.spotify.com/embed/track/${leftSong.id}`;
-            }
-
-            // Handle Right Preview
-            if (rightSong.id === "") {
-                document.getElementById("rightPreview").style.visibility = "hidden";
-            } else {
-                document.getElementById("rightPreview").style.visibility = "visible";
-                document.getElementById("rightPreview").src = `https://open.spotify.com/embed/track/${rightSong.id}`;
-            }
+            updatePlayer("leftPreview", leftSong.id);
+            updatePlayer("rightPreview", rightSong.id);
 
             numQuestion++;
+        }
+
+        function updatePlayer(elementId, songId) {
+            var player = document.getElementById(elementId);
+            if (songId === "") {
+                player.style.visibility = "hidden";
+            } else {
+                player.style.visibility = "visible";
+                player.src = `https://open.spotify.com/embed/track/${songId}?utm_source=generator&theme=0`;
+            }
         }
     </script>
 </head>
