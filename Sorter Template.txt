@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Song Sorter Template</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&family=Rampart+One&family=Satisfy&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700;1" rel="stylesheet">
     
     <style type="text/css">
     /* =========================================================
@@ -11,14 +11,14 @@
     ========================================================= */
     :root {
         /* TITLE FONT SETTINGS */
-        --header-font: "Rampart One", sans-serif; /* Try 'Satisfy' for a cursive look! */
+        --header-font: "Comfortaa", sans-serif;
         --header-size: 4rem;
         --header-weight: 800;
 
         /* GENERAL SETTINGS */
         --body-font: 'Comfortaa', sans-serif;
-        --bg-color: #1c1c1c;
-        --header-color: #ffffff;     /* This affects the Title & Instructions */
+        --bg-color: #1c1c1c;         /* Page Background */
+        --header-color: #ffffff;     /* This affects the Title*/
         --accent-color: #029ac0;     /* Showdown # and Glow Color */
         
         /* BUTTONS */
@@ -36,18 +36,23 @@
     }
 
     /* =========================================================
-       CORE STYLES
+       CORE STYLES (Usually don't need to touch these)
     ========================================================= */
-    body { background-color: var(--bg-color); color: var(--header-color); font-family: var(--body-font); text-align: center; }
+    body { background-color: var(--bg-color); 
+           color: var(--header-color); 
+           font-family: var(--body-font); 
+           text-align: center; }
     
     .main-logo { 
-        width: var(--logo-width); height: var(--logo-height); 
-        background-image: var(--logo-link); background-size: contain; 
-        background-repeat: no-repeat; background-position: center; 
+        width: var(--logo-width); 
+        height: var(--logo-height); 
+        background-image: var(--logo-link); 
+        background-size: contain; 
+        background-repeat: no-repeat; 
+        background-position: center; 
         margin: 0 auto 10px auto; display: block; filter: invert(100%); 
     }
 
-    /* The feature transferred from your old code */
     h1.album-title {
         font-family: var(--header-font);
         font-weight: var(--header-weight);
@@ -83,7 +88,7 @@
 
     <script type="text/javascript">
         /* =========================================================
-           2. SONG DATA
+           2. SONG DATA (Add/Remove Songs Here)
         ========================================================= */
         var namMember = [
             { name: "Tim McGraw", id: "0Om9WAB5RS09L80DyOfTNa" },
@@ -104,7 +109,7 @@
         ];
 
         /* =========================================================
-           3. LOGIC ENGINE
+           3. LOGIC ENGINE (Safe to Ignore)
         ========================================================= */
         var lstMember = [], parent = [], equal = [], rec = [];
         var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
@@ -201,7 +206,7 @@
                 player.style.visibility = "hidden";
             } else {
                 player.style.visibility = "visible";
-                player.src = `https://open.spotify.com/embed/track/${songId}`;
+                player.src = `https://open.spotify.com/embed/track/${songId}?utm_source=generator&theme=0`;
             }
         }
     </script>
@@ -210,7 +215,7 @@
 <body>
 <div class="header-container">
     <div class="main-logo"></div>
-    <h1 class="album-title">Taylor Swift</h1> 
+    <h1 class="album-title">""</h1> 
     <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
