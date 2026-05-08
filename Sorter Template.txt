@@ -3,16 +3,22 @@
 <head>
     <meta charset="utf-8">
     <title>Song Sorter Template</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&family=Rampart+One&family=Satisfy&display=swap" rel="stylesheet">
     
     <style type="text/css">
     /* =========================================================
        1. VISUAL SETTINGS (Change these for each album!)
     ========================================================= */
     :root {
+        /* TITLE FONT SETTINGS */
+        --header-font: "Rampart One", sans-serif; /* Try 'Satisfy' for a cursive look! */
+        --header-size: 4rem;
+        --header-weight: 800;
+
+        /* GENERAL SETTINGS */
         --body-font: 'Comfortaa', sans-serif;
-        --bg-color: #1c1c1c;         /* Page Background */
-        --header-color: #ffffff;     /* Text Color */
+        --bg-color: #1c1c1c;
+        --header-color: #ffffff;     /* This affects the Title & Instructions */
         --accent-color: #029ac0;     /* Showdown # and Glow Color */
         
         /* BUTTONS */
@@ -30,10 +36,27 @@
     }
 
     /* =========================================================
-       CORE STYLES (Usually don't need to touch these)
+       CORE STYLES
     ========================================================= */
     body { background-color: var(--bg-color); color: var(--header-color); font-family: var(--body-font); text-align: center; }
-    .main-logo { width: var(--logo-width); height: var(--logo-height); background-image: var(--logo-link); background-size: contain; background-repeat: no-repeat; background-position: center; margin: 0 auto 20px auto; display: block; filter: invert(100%); }
+    
+    .main-logo { 
+        width: var(--logo-width); height: var(--logo-height); 
+        background-image: var(--logo-link); background-size: contain; 
+        background-repeat: no-repeat; background-position: center; 
+        margin: 0 auto 10px auto; display: block; filter: invert(100%); 
+    }
+
+    /* The feature transferred from your old code */
+    h1.album-title {
+        font-family: var(--header-font);
+        font-weight: var(--header-weight);
+        font-size: var(--header-size);
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: var(--header-color);
+    }
+
     #battleNumber { font-size: 20px; color: var(--accent-color); padding-bottom: 20px; }
     
     #leftField, #rightField {
@@ -53,14 +76,14 @@
     .spotify-preview:hover { box-shadow: 0 0 20px var(--accent-color); }
 
     .header-container { margin: 50px 0; }
-    .instructions-text { color: #bbbbbb; font-size: 16px; }
+    .instructions-text { color: #bbbbbb; font-size: 16px; margin-top: 5px; }
     .note { color: var(--btn-text); font-style: italic; display: block; margin-top: 10px; }
     #mainTable { margin: 40px auto; border-spacing: 20px; }
     </style>
 
     <script type="text/javascript">
         /* =========================================================
-           2. SONG DATA (Add/Remove songs here)
+           2. SONG DATA
         ========================================================= */
         var namMember = [
             { name: "Tim McGraw", id: "0Om9WAB5RS09L80DyOfTNa" },
@@ -77,13 +100,11 @@
             { name: "I'm Only Me When I'm With You", id: "0JIdBrXGSJXS72zjF9ss9u" },
             { name: "Invisible", id: "5OOd01o2YS1QFwdpVLds3r" },
             { name: "A Perfectly Good Heart", id: "1spLfUJxtyVyiKKTegQ2r4" },
-            { name: "Crazier", id: "5vyxXfD5gLlyPxGZMEjtmd" },
-            { name: "Beautiful Eyes", id: "" },
-            { name: "I Heart ?", id: "" }
+            { name: "Crazier", id: "5vyxXfD5gLlyPxGZMEjtmd" }
         ];
 
         /* =========================================================
-           3. LOGIC ENGINE (Safe to ignore)
+           3. LOGIC ENGINE
         ========================================================= */
         var lstMember = [], parent = [], equal = [], rec = [];
         var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
@@ -189,6 +210,7 @@
 <body>
 <div class="header-container">
     <div class="main-logo"></div>
+    <h1 class="album-title">Taylor Swift</h1> 
     <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
