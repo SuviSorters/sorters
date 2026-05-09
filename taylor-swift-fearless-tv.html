@@ -5,7 +5,6 @@
     <title>Fearless TV Sorter</title>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Italiana&display=swap" rel="stylesheet">
 
-    
     <style type="text/css">
     /* =========================================================
        1. VISUAL SETTINGS (Change these for each album!)
@@ -15,20 +14,17 @@
         --header-size: 4rem;
         --header-weight: 800;
         
-            
-        /* SUBTITLE FONT */
         --subtitle-font: 'Italiana', sans-serif;
         --subtitle-size: 2rem;
         --subtitle-color: #fddaa6;
         
-    /* SPACING CONTROLS */
-    --header-letter-spacing: 10px;
-    --subtitle-letter-spacing: 10px;
-    --header-line-height: 0.5;
+        --header-letter-spacing: 10px;
+        --subtitle-letter-spacing: 10px;
+        --header-line-height: 0.5;
 
         --body-font: 'Comfortaa', sans-serif;
-        --bg-color: #1c1c1c;         /* Page Background */
-        --header-color: #fddaa6;     /* Text Color */
+        --bg-color: #1c1c1c;
+        --header-color: #fddaa6;
         --accent-color: #fddaa6;     /* Showdown # and Glow Color */
         
         /* BUTTONS */
@@ -48,8 +44,22 @@
     /* =========================================================
        CORE STYLES (Usually don't need to touch these)
     ========================================================= */
-    body { background-color: var(--bg-color); color: var(--header-color); font-family: var(--body-font); text-align: center; }
-    .main-logo { width: var(--logo-width); height: var(--logo-height); background-image: var(--logo-link); background-size: contain; background-repeat: no-repeat; background-position: center; margin: 0 auto 30px auto; display: block; filter: invert(100%); }
+    body { 
+        background-color: var(--bg-color); 
+        color: var(--header-color); 
+        font-family: var(--body-font); 
+        text-align: center; }
+
+    .main-logo { 
+        width: var(--logo-width); 
+        height: var(--logo-height); 
+        background-image: var(--logo-link); 
+        background-size: contain; 
+        background-repeat: no-repeat; 
+        background-position: center; 
+        margin: 0 auto 30px auto; 
+        display: block; 
+        filter: invert(100%); }
 
     h1.album-title {
         font-family: var(--header-font);
@@ -72,7 +82,10 @@
         display: block;
     }
     
-    #battleNumber { font-size: 20px; color: var(--accent-color); padding-bottom: 20px; }
+    #battleNumber { 
+        font-size: 20px; 
+        color: var(--accent-color); 
+        padding-bottom: 20px; }
     
     #leftField, #rightField {
         width: 250px; height: 250px; display: table-cell; vertical-align: middle; text-align: center;
@@ -98,7 +111,7 @@
 
     <script type="text/javascript">
         /* =========================================================
-           2. SONG DATA (Add/Remove songs here)
+           2. SONG DATA
         ========================================================= */
         var namMember = [
     { name: "Fearless", id: "77sMIMlNaSURUAXq5coCxE" },
@@ -114,7 +127,6 @@
     { name: "Forever & Always", id: "1msEuwSBneBKpVCZQcFTsU" },
     { name: "The Best Day", id: "6ON9UuIq49xXY9GPmHIYRp" },
     { name: "Change", id: "3ExweHKZF9B752DPQByRVT" },
-    // Platinum Edition Bonus Tracks
     { name: "Jump Then Fall", id: "2m3ObD945KvpE5y9A1eUWm" },
     { name: "Untouchable", id: "0tQ9vBYpldCuikPsbgOVKA" },
     { name: "Forever & Always (Piano Version)", id: "01QdEx6kFr78ZejhQtWR5m" },
