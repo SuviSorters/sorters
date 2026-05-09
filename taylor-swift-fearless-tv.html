@@ -2,17 +2,33 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Fearless Sorter</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
+    <title>Fearless TV Sorter</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Italiana&display=swap" rel="stylesheet">
+
     
     <style type="text/css">
     /* =========================================================
        1. VISUAL SETTINGS (Change these for each album!)
     ========================================================= */
     :root {
+        --header-font: "Italiana", sans-serif;
+        --header-size: 4rem;
+        --header-weight: 800;
+        
+            
+        /* SUBTITLE FONT */
+        --subtitle-font: 'Italiana', sans-serif;
+        --subtitle-size: 2rem;
+        --subtitle-color: #fddaa6;
+        
+    /* SPACING CONTROLS */
+    --header-letter-spacing: 10px;
+    --subtitle-letter-spacing: 10px;
+    --header-line-height: 0.5;
+
         --body-font: 'Comfortaa', sans-serif;
         --bg-color: #1c1c1c;         /* Page Background */
-        --header-color: #ffffff;     /* Text Color */
+        --header-color: #fddaa6;     /* Text Color */
         --accent-color: #fddaa6;     /* Showdown # and Glow Color */
         
         /* BUTTONS */
@@ -33,7 +49,29 @@
        CORE STYLES (Usually don't need to touch these)
     ========================================================= */
     body { background-color: var(--bg-color); color: var(--header-color); font-family: var(--body-font); text-align: center; }
-    .main-logo { width: var(--logo-width); height: var(--logo-height); background-image: var(--logo-link); background-size: contain; background-repeat: no-repeat; background-position: center; margin: 0 auto 20px auto; display: block; filter: invert(100%); }
+    .main-logo { width: var(--logo-width); height: var(--logo-height); background-image: var(--logo-link); background-size: contain; background-repeat: no-repeat; background-position: center; margin: 0 auto 30px auto; display: block; filter: invert(100%); }
+
+    h1.album-title {
+        font-family: var(--header-font);
+        font-weight: var(--header-weight);
+        font-size: var(--header-size);
+        letter-spacing: var(--header-letter-spacing);
+        line-height: var(--header-line-height);
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: var(--header-color);
+    }
+    
+    .album-subtitle {
+        font-family: var(--subtitle-font);
+        font-size: var(--subtitle-size);
+        letter-spacing: var(--subtitle-letter-spacing);
+        color: var(--subtitle-color);
+        margin-top: 5px;
+        margin-bottom: 15px;
+        display: block;
+    }
+    
     #battleNumber { font-size: 20px; color: var(--accent-color); padding-bottom: 20px; }
     
     #leftField, #rightField {
@@ -53,7 +91,7 @@
     .spotify-preview:hover { box-shadow: 0 0 20px var(--accent-color); }
 
     .header-container { margin: 50px 0; }
-    .instructions-text { color: #bbbbbb; font-size: 16px; }
+    .instructions-text { color: #bbbbbb; font-size: 16px; margin-top: 5px;}
     .note { color: var(--btn-text); font-style: italic; display: block; margin-top: 10px; }
     #mainTable { margin: 40px auto; border-spacing: 20px; }
     </style>
@@ -199,6 +237,8 @@
 <body>
 <div class="header-container">
     <div class="main-logo"></div>
+    <h1 class="album-title">FEARLESS</h1>
+    <span class="album-subtitle">(TAYLOR'S VERSION)</span>
     <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
