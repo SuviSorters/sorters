@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- a) Replace the labelled sections directly below.
-     b) Press ctrl+F and type in "2." There you can list the songs.
-     c) Press ctrl+F and type in "3." there you can write the album title.
-    -->
     <meta charset="utf-8">
     <title>The Mountain Sorter</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Rampart+One&family=Satisfy&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
     
     <style type="text/css">
     :root {
@@ -26,10 +22,10 @@
         
         /* MIDDLE BUTTONS */
         --btn-bg: #1c1c1c;
-        --btn-text: #4A8273;
+        --btn-text: #eec454;
         --btn-hover-bg: #4A8273;
-        --btn-hover-text: #ffffff;
-        --btn-outline: #4A8273;
+        --btn-hover-text: #eec454;
+        --btn-outline: #eec454;
 
         /* TEXT SECTIONS */
         --instr-color: #bbbbbb;
@@ -78,14 +74,15 @@
     }
 
     #leftField, #rightField {
+        font-family: "Rampart One";
         width: 250px; height: 250px; display: table-cell; 
         vertical-align: middle; text-align: center;
         border-radius: 40px; 
         background-image: var(--album-cover);
         background-size: cover; background-position: center; 
         position: relative; cursor: pointer;
-        font-size: 22px; font-weight: 800; 
-        color: #eec454 !important; text-shadow: 0 0 10px #000; 
+        font-size: 35px; font-weight: 800; 
+        color: #ffffff !important; text-shadow: 0 0 10px #000; 
         z-index: 5; transition: 0.3s;
     }
 
@@ -110,6 +107,25 @@
         background: var(--btn-hover-bg); 
         color: var(--btn-hover-text); 
     }
+    
+    .spotify-preview { margin-top: 15px; border-radius: 12px; display: block; margin-left: auto; margin-right: auto; transition: 0.3s; }
+    .spotify-preview:hover { box-shadow: 0 0 20px var(--glow-color); }
+
+    #download-btn {
+        margin: 20px auto;
+        padding: 10px 25px;
+        background: var(--btn-bg);
+        color: #eec454;
+        border: 2px solid #eec454;
+        border-radius: 10px;
+        font-family: Comfortaa;
+        cursor: pointer;
+        display: none; /* Hidden until results show */
+    }
+    #download-btn:hover {
+        background: #4A8273;
+        color: #eec454;
+    }
 
     .header-container { margin: 40px 0; }
     .instructions-text { color: var(--instr-color); font-size: 16px; }
@@ -120,10 +136,21 @@
     <script type="text/javascript">
         // 2. SONG LIST SETUP
         var namMember = [
-            "The Mountain", "The Moon Cave", "The Happy Dictator", "The Hardest Thing",
-            "Orange County", "The God of Lying", "The Empty Dream Machine", "The Manifesto",
-            "The Plastic Guru", "Delirium", "Damascus", "The Shadowy Light", "Casablanca",
-            "The Sweet Prince", "The Sad God"
+            {name: "The Mountain", id:"3MebYJnEDK4XdnCj3VMLjL"},
+            {name: "The Moon Cave", id:"6VflG4mpZSlpKnqNRL3NO9"},
+            {name: "The Happy Dictator", id:"4JbyNMvp3BqVILVy4Bbevf"},
+            {name: "The Hardest Thing", id:"2jSbuzSLLvFYO7xAMEU85i"},
+            {name: "Orange County", id:"4HnBNOfnPYCgRzB1dcAi3x"},
+            {name: "The God of Lying", id:"5nrbuDZe5Hod1nUsND6QUA"},
+            {name: "The Empty Dream Machine", id:"5FH7DTLl8WQNkZs00Cb3EM"},
+            {name: "The Manifesto", id:"1WUBWl3jNNYo0hrPTrA5D0"},
+            {name: "The Plastic Guru", id:"68nwsIBVoGDO38VKhtvKzD"},
+            {name: "Delirium", id:"4uIXvy8PbYLEhs0PZgaP8p"},
+            {name: "Damascus", id:"5eZVQYGpyXkeEVMhbpDhPB"},
+            {name: "The Shadowy Light", id:"1WHBtgrgSKDJd9Y8vHNZqH"},
+            {name: "Casablanca", id:"4PjP7VfSAPxyt2TprUpALA"},
+            {name: "The Sweet Prince", id:"5Wmek5wAmAcuEcjHa0YOzg"},
+            {name: "The Sad God", id:"5pMMyQyob7rjYO9y8lD7Ey"}
         ];
 
         // === Logic Engine (No need to edit) ---
@@ -182,17 +209,32 @@
         }
 
         function showResult() {
-            var ranking = 1, sameRank = 1, str = "", i;
-            str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
-            str += "<tr><td style='background:var(--btn-outline); color:white; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:white; padding:10px;'>Song<\/td><\/tr>";
+                        var ranking = 1, sameRank = 1, str = "", i;
+            // (below function showResult var ranking : 3. Wrapped table in a div for cleaner image capture
+            str += "<div id='captureArea' style='background:var(--bg-color); padding: 20px; display:inline-block;'>";
+            str += "<table style='width:350px; font-family:var(--body-font); color:#fff; margin:0 auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-hover-bg); color:var(--btn-hover-text); padding:10px; border: 1px solid #444;'>Rank<\/td><td style='background:var(--btn-hover-bg); color:var(--btn-hover-text); padding:10px; border: 1px solid #444;'>Song<\/td><\/tr>";
             for (i=0; i<namMember.length; i++) {
-                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]]+"<\/td><\/tr>";
+                str += "<tr><td style='padding:10px; border: 1px solid #444;'>"+ranking+"<\/td><td style='padding:10px; border: 1px solid #444;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
                 if (i<namMember.length-1) {
                     if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
                 }
             }
-            str += "<\/table>";
+            str += "<\/table><\/div>";
             document.getElementById("resultField").innerHTML = str;
+            document.getElementById("mainTable").style.display = "none";
+            document.getElementById("download-btn").style.display = "block"; // Show download button
+        }
+            
+        // (directly below #3) 4. Download Function
+        function downloadImage() {
+            const area = document.getElementById('captureArea');
+            html2canvas(area, { backgroundColor: "#1c1c1c" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'the-mountain-ranking.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
         }
 
         function skipQuestion() {
@@ -202,10 +244,27 @@
         }
 
         function showImage() {
+            var leftSong = namMember[lstMember[cmp1][head1]];
+            var rightSong = namMember[lstMember[cmp2][head2]];
+
             document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
-            document.getElementById("leftField").innerHTML = namMember[lstMember[cmp1][head1]];
-            document.getElementById("rightField").innerHTML = namMember[lstMember[cmp2][head2]];
+            document.getElementById("leftField").innerHTML = leftSong.name;
+            document.getElementById("rightField").innerHTML = rightSong.name;
+            
+            updatePlayer("leftPreview", leftSong.id);
+            updatePlayer("rightPreview", rightSong.id);
+
             numQuestion++;
+        }
+
+        function updatePlayer(elementId, songId) {
+            var player = document.getElementById(elementId);
+            if (songId === "") {
+                player.style.visibility = "hidden";
+            } else {
+                player.style.visibility = "visible";
+                player.src = `https://open.spotify.com/embed/track/${songId}?utm_source=generator&theme=0`;
+            }
         }
     </script>
 </head>
@@ -228,17 +287,26 @@
         <td class="middleField" onclick="sortList(0)">I like both</td>
         <td id="rightField" onclick="sortList(1)"></td>
     </tr>
-    <tr>
-        <td></td>
+    <tr id="preview-row">
+        <td>
+            <iframe id="leftPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
         <td class="middleField" onclick="skipQuestion()">no opinion</td>
-        <td></td>
+        <td>
+            <iframe id="rightPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
     </tr>
 </table>
 <div id="resultField"></div>
-
+<button id="download-btn" onclick="downloadImage()">Download Results as Image</button>
 <script type="text/javascript">
     initList();
     showImage();
 </script>
+<p class="other">
+<center><small><br /><br />used with permission<br /><br/>
+<a href="http://biasorter.tumblr.com/" style= "color:#4A8273">original code created by biasorter</a><br />
+<a href="https://www.tumblr.com/suvisorters" style= "color:#4A8273">modified by suvisorters</a>
+</small></center>
 </body>
 </html>
