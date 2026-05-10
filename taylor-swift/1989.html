@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>1989 Sorter</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <style type="text/css">
+    /* =========================================================
+       1. VISUAL SETTINGS (Change these for each album!)
+    =========================================================
+    NOTE: All colors must be written in hex code format such as #1b1b1b*/
+    :root {
+    /*FONTS*/
+        --header-font: 'Permanent Marker', sans-serif; --header-size: 4rem; --header-weight: 800;
+        --subtitle-font: '', sans-serif; --subtitle-size: 2rem; --subtitle-weight: 200;
+        --body-font: 'Comfortaa', sans-serif;
+        
+        --header-letter-spacing: 0px;
+        --subtitle-letter-spacing: 0px;
+        --header-line-height: 1.0;
+
+    /*COLORS*/
+        --color-1: #d1f3ff;
+        --color-2: #034a62;
+        /*Extra Colors (Replace with #hex value if you want to change it)*/
+        --header-color: var(--color-1);
+        --subtitle-color: #ffffff;
+        --note-color: var(--color-1);
+        --battle-color: var(--color-2);
+        --showdown-color: var(--color-2);
+        --glow-color: var(--color-2);
+        
+        --bg-color: #1c1c1c;
+
+        --btn-bg: #1c1c1c;
+        --btn-text: var(--color-1);
+        --btn-outline: var(--color-1);
+        --btn-hover-bg: var(--color-1);
+        --btn-hover-text: #ffffff;
+
+    /* IMAGES */
+        --album-cover: url('https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_1989.png');
+        --logo-link: url('https://upload.wikimedia.org/wikipedia/commons/6/6e/TaylorSwiftAlbum2006.png');
+        --logo-width: 600px;
+        --logo-height: 100px;
+    }
+
+    /* =========================================================
+       CORE STYLES (Usually don't need to touch these)
+    ========================================================= */
+    body { 
+        background-color: var(--bg-color); 
+        color: var(--header-color); 
+        font-family: var(--body-font); 
+        text-align: center; }
+    
+    .main-logo {
+        width: var(--logo-width);
+        height: var(--logo-height);
+        background-image: var(--logo-link);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 5px auto;
+        display: block;
+        filter: invert(100%); }
+
+    h1.album-title {
+        font-family: var(--header-font);
+        font-weight: var(--header-weight);
+        font-size: var(--header-size);
+        letter-spacing: var(--header-letter-spacing);
+        line-height: var(--header-line-height);
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: var(--header-color);
+    }
+    
+    .album-subtitle {
+        font-family: var(--subtitle-font);
+        font-weight: var(--subtitle-weight);
+        font-size: var(--subtitle-size);
+        letter-spacing: var(--subtitle-letter-spacing);
+        margin-top: 5px;
+        margin-bottom: 15px;
+        display: block;
+        color: var(--subtitle-color);
+    }
+
+    #battleNumber { 
+        font-size: 20px; 
+        color: var(--showdown-color); 
+        padding-bottom: 20px; }
+
+    #leftField, #rightField {
+        width: 250px; height: 250px; display: table-cell; 
+        vertical-align: middle; text-align: center;
+        border-radius: 40px; 
+        background-image: var(--album-cover);
+        background-size: cover; background-position: center; 
+        position: relative; cursor: pointer;
+        font-size: 22px; font-weight: 800; 
+        color: #FFFFFF !important; 
+        text-shadow: 0 0 10px #000; z-index: 5; transition: 0.3s;
+    }
+
+    #leftField:hover, #rightField:hover { 
+        transform: scale(1.03); 
+        box-shadow: 0 0 30px var(--glow-color); }
+    #leftField::before, #rightField::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1; }
+
+    .middleField { width: 150px; height: 80px; border: 4px solid var(--btn-outline); border-radius: 20px; background: var(--btn-bg); color: var(--btn-text); cursor: pointer; transition: 0.3s; }
+    .middleField:hover { background: var(--btn-hover-bg); color: var(--btn-hover-text); }
+
+    .spotify-preview { margin-top: 15px; border-radius: 12px; display: block; margin-left: auto; margin-right: auto; transition: 0.3s; }
+    .spotify-preview:hover { box-shadow: 0 0 20px var(--glow-color); }
+
+    .header-container { margin: 50px 0; }
+    .instructions-text { color: #cccccc; font-size: 16px; margin-top: 5px;}
+    .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
+    #mainTable { margin: 40px auto; border-spacing: 20px; }
+    </style>
+
+    <script type="text/javascript">
+        
+        /* =========================================================
+           2. SONG DATA
+        ========================================================= */
+        var namMember = [
+    { name: "Welcome to New York", id: "33Kq0AT5rvwyE4azisG08x" },
+    { name: "Blank Space", id: "2sC2P3BN0IXujNaaSyDmtP" },
+    { name: "Style", id: "1fo2ctLqj3zBhRQKOXprol" },
+    { name: "Out of the Woods", id: "6Nde5KuTXyB7jlPO4upaBo" },
+    { name: "All You Had to Do Was Stay", id: "0lmMtDQ2ElasKU2qDAE6NN" },
+    { name: "Shake It Off", id: "3fthfkkvy9av3q3uAGVf7U" },
+    { name: "I Wish You Would", id: "1B5VzXPqMlvRw0U4HJY3dJ" },
+    { name: "Bad Blood", id: "0yN4fNzmVnmgC0dsOoi9Wh" },
+    { name: "Wildest Dreams", id: "106R7Z57WYzBAfrXImV30y" },
+    { name: "How You Get the Girl", id: "6wfugRLamFsTRbPcCpNnP7" },
+    { name: "This Love", id: "1kTPQnabROVkW9bUXdCGrB" },
+    { name: "I Know Places", id: "2zfgVd034GlUvk7LqBHl6u" },
+    { name: "Clean", id: "4bXCcoesMt8u99xMsbLr9U" },
+    { name: "Wonderland", id: "6iWMI5oOhWrDbLbjmwTWFq" },
+    { name: "You Are in Love", id: "4A2LfnduSTsE8u0ecYROxE" },
+    { name: "New Romantics", id: "6rZVy6FIG7lSJQMFXHo12z" }
+        ];
+
+        /* =========================================================
+           3. LOGIC ENGINE (Safe to ignore)
+        ========================================================= */
+        var lstMember = [], parent = [], equal = [], rec = [];
+        var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
+
+        function initList(){
+            var n = 0, mid, i;
+            lstMember[n] = [];
+            for (i=0; i<namMember.length; i++) { lstMember[n][i] = i; }
+            parent[n] = -1; totalSize = 0; n++;
+            for (i=0; i<lstMember.length; i++) {
+                if(lstMember[i].length>=2) {
+                    mid = Math.ceil(lstMember[i].length/2);
+                    lstMember[n] = lstMember[i].slice(0,mid); totalSize += lstMember[n].length; parent[n] = i; n++;
+                    lstMember[n] = lstMember[i].slice(mid,lstMember[i].length); totalSize += lstMember[n].length; parent[n] = i; n++;
+                }
+            }
+            for (i=0; i<namMember.length; i++) { rec[i] = 0; }
+            nrec = 0;
+            for (i=0; i<=namMember.length; i++) { equal[i] = -1; }
+            cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;
+            head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0;
+        }
+
+        function sortList(flag){
+            if (finishFlag) return;
+            if (flag<0) {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (flag>0) {
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            } else {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+                equal[rec[nrec-1]] = lstMember[cmp2][head2];
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                while (head1<lstMember[cmp1].length){ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) {
+                while (head2<lstMember[cmp2].length){ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                for (var i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) { lstMember[parent[cmp1]][i] = rec[i]; }
+                lstMember.pop(); lstMember.pop();
+                cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;
+                if (head1==0 && head2==0) { for (i=0; i<namMember.length; i++) { rec[i] = 0; } nrec = 0; }
+            }
+            if (cmp1<0) {
+                document.getElementById("battleNumber").innerHTML = "Showdown #"+(numQuestion-1)+"<br>100% sorted.";
+                showResult(); finishFlag = 1;
+            } else { showImage(); }
+        }
+
+        function showResult() {
+            var ranking = 1, sameRank = 1, str = "", i;
+            str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-outline); color:#ffffff; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
+            for (i=0; i<namMember.length; i++) {
+                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
+                if (i<namMember.length-1) {
+                    if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
+                }
+            }
+            str += "<\/table>";
+            document.getElementById("resultField").innerHTML = str;
+            document.getElementById("mainTable").style.display = "none";
+        }
+
+        function skipQuestion() {
+            if (finishFlag) return;
+            var randomChoice = Math.random() < 0.5 ? -1 : 1;
+            sortList(randomChoice);
+        }
+
+        function showImage() {
+            var leftSong = namMember[lstMember[cmp1][head1]];
+            var rightSong = namMember[lstMember[cmp2][head2]];
+
+            document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
+            document.getElementById("leftField").innerHTML = leftSong.name;
+            document.getElementById("rightField").innerHTML = rightSong.name;
+            
+            updatePlayer("leftPreview", leftSong.id);
+            updatePlayer("rightPreview", rightSong.id);
+
+            numQuestion++;
+        }
+
+        function updatePlayer(elementId, songId) {
+            var player = document.getElementById(elementId);
+            if (songId === "") {
+                player.style.visibility = "hidden";
+            } else {
+                player.style.visibility = "visible";
+                player.src = `https://open.spotify.com/embed/track/${songId}?utm_source=generator&theme=0`;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div class="header-container">
+    <div class="main-logo"></div>
+    <h1 class="album-title">1989</h1>
+    <span class="album-subtitle"></span>
+        <p class="instructions-text">
+        Select which song you like better to get an accurate list.<br>
+        <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
+    </p>
+</div>
+
+<table id="mainTable" align="center">
+    <tr><td id="battleNumber" colspan="3">Showdown #1<br>0% sorted.</td></tr>
+    <tr>
+        <td id="leftField" onclick="sortList(-1)"></td>
+        <td class="middleField" onclick="sortList(0)">I like both</td>
+        <td id="rightField" onclick="sortList(1)"></td>
+    </tr>
+    <tr id="preview-row">
+        <td>
+            <iframe id="leftPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
+        <td class="middleField" onclick="skipQuestion()">no opinion</td>
+        <td>
+            <iframe id="rightPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
+    </tr>
+</table>
+<div id="resultField"></div>
+
+<script type="text/javascript">
+    initList();
+    showImage();
+</script>
+</body>
+</html>
