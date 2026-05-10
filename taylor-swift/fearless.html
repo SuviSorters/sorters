@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Fearless Sorter</title>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style type="text/css">
     /* =========================================================
@@ -103,6 +104,22 @@
     .spotify-preview { margin-top: 15px; border-radius: 12px; display: block; margin-left: auto; margin-right: auto; transition: 0.3s; }
     .spotify-preview:hover { box-shadow: 0 0 20px var(--accent-color); }
 
+    #download-btn {
+        margin: 20px auto;
+        padding: 10px 25px;
+        background: #1c1c1c;
+        color: #fddaa6;
+        border: 2px solid #fddaa6;
+        border-radius: 10px;
+        font-family: var(--body-font);
+        cursor: pointer;
+        display: none; /* Hidden until results show */
+    }
+    #download-btn:hover {
+        background: #c0832a;
+        color: #ffffff;
+    }
+
     .header-container { margin: 50px 0; }
     .instructions-text { color: #bbbbbb; font-size: 16px; margin-top: 5px;}
     .note { color: var(--btn-text); font-style: italic; display: block; margin-top: 10px; }
@@ -196,17 +213,31 @@
 
         function showResult() {
             var ranking = 1, sameRank = 1, str = "", i;
-            str += "<table style='width:350px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
-            str += "<tr><td style='background:var(--btn-outline); color:#ffffff; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
+
+            str += "<div id='captureArea' style='background:#1c1c1c; padding: 20px; display:inline-block;'>";
+            str += "<table style='width:350px; font-family: Comfortaa; color:#fff; margin:0 auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:#fddaa6; color:#c0832a; padding:10px; border: 1px solid #444;'>Rank<\/td><td style='background:#fddaa6; color:#c0832a; padding:10px; border: 1px solid #444;'>Song<\/td><\/tr>";
             for (i=0; i<namMember.length; i++) {
-                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
+                str += "<tr><td style='padding:10px; border: 1px solid #444;'>"+ranking+"<\/td><td style='padding:10px; border: 1px solid #444;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
                 if (i<namMember.length-1) {
                     if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
                 }
             }
-            str += "<\/table>";
+            str += "<\/table><\/div>";
             document.getElementById("resultField").innerHTML = str;
             document.getElementById("mainTable").style.display = "none";
+            document.getElementById("download-btn").style.display = "block"; // Show download button
+        }
+            
+        // (directly below #3) 4. Download Function
+        function downloadImage() {
+            const area = document.getElementById('captureArea');
+            html2canvas(area, { backgroundColor: "#1c1c1c" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'fearless-ranking.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
         }
 
         function skipQuestion() {
@@ -267,7 +298,7 @@
 </table>
 
 <div id="resultField"></div>
-
+<button id="download-btn" onclick="downloadImage()">Download Results as Image</button>
 <script type="text/javascript">
     initList();
     showImage();
