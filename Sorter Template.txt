@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>/*Insert Tab Title*/</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600..700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  
     
     <style type="text/css">
-    /* =========================================================
-       1. VISUAL SETTINGS (Change these for each album!)
-    =========================================================
-    NOTE: All colors must be written in hex code format such as #1b1b1b*/
+/* =========================================================
+   1. VISUAL SETTINGS (Change these for each album!)
+=========================================================*/
     :root {
     /*FONTS*/
         --header-font: '', sans-serif; --header-size: 4rem; --header-weight: 800;
@@ -23,7 +23,7 @@
     /*COLORS*/
         --color-1: #a2c9a8;
         --color-2: #029ac0;
-        /*Extra Colors (Replace with #hex value if you want to change it)*/
+    /*EXTRA COLORS (Replace with #hex value if you want to change it)*/
         --header-color: var(--color-1);
         --subtitle-color: #ffffff;
         --note-color: var(--color-1);
@@ -46,9 +46,9 @@
         --logo-height: 100px;
     }
 
-    /* =========================================================
-       CORE STYLES (Usually don't need to touch these)
-    ========================================================= */
+/* =========================================================
+    CORE STYLES (Usually don't need to touch these)
+========================================================= */
     body { 
         background-color: var(--bg-color); 
         color: var(--header-color); 
@@ -94,13 +94,16 @@
         padding-bottom: 20px; }
 
     #leftField, #rightField {
+        font-family: var(--header-font);
+        font-style: ;
+        text-transform: ;
         width: 250px; height: 250px; display: table-cell; 
         vertical-align: middle; text-align: center;
         border-radius: 40px; 
         background-image: var(--album-cover);
         background-size: cover; background-position: center; 
         position: relative; cursor: pointer;
-        font-size: 22px; font-weight: 800; 
+        font-size: 40px; font-weight: 800; 
         color: #FFFFFF !important; 
         text-shadow: 0 0 10px #000; z-index: 5; transition: 0.3s;
     }
@@ -116,6 +119,22 @@
     .spotify-preview { margin-top: 15px; border-radius: 12px; display: block; margin-left: auto; margin-right: auto; transition: 0.3s; }
     .spotify-preview:hover { box-shadow: 0 0 20px var(--glow-color); }
 
+    #download-btn {
+        margin: 20px auto;
+        padding: 10px 25px;
+        background: var(--btn-bg);
+        color: var(--btn-text);
+        border: 2px solid var(--btn-outline);
+        border-radius: 10px;
+        font-family: var(--body-font);
+        cursor: pointer;
+        display: none; /* Hidden until results show */
+    }
+    #download-btn:hover {
+        background: var(--color-1);
+        color: var(--btn-hover-text);
+    }
+
     .header-container { margin: 50px 0; }
     .instructions-text { color: #cccccc; font-size: 16px; margin-top: 5px;}
     .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
@@ -124,18 +143,18 @@
 
     <script type="text/javascript">
         
-        /* =========================================================
-           2. SONG DATA
-        ========================================================= */
+/* =========================================================
+   2. SONG DATA
+========================================================= */
         var namMember = [
     { name: "Example A", id: "/*Insert Song 1 Spotify ID*/" },
     { name: "Example B", id: "/*Insert Song 2 Spotify ID*/" },
     { name: "Example C", id: "/*Insert Song 3 Spotify ID*/" }
         ];
 
-        /* =========================================================
-           3. LOGIC ENGINE (Safe to ignore)
-        ========================================================= */
+/* =========================================================
+   3. LOGIC ENGINE (Safe to ignore)
+========================================================= */
         var lstMember = [], parent = [], equal = [], rec = [];
         var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
 
@@ -192,17 +211,29 @@
 
         function showResult() {
             var ranking = 1, sameRank = 1, str = "", i;
-            str += "<table style='width:300px; font-family:var(--body-font); color:#fff; margin:20px auto; border-collapse:collapse;'>";
-            str += "<tr><td style='background:var(--btn-outline); color:#ffffff; padding:10px;'>Rank<\/td><td style='background:var(--btn-outline); color:FFFFFF; padding:10px;'>Song<\/td><\/tr>";
+            str += "<div id='captureArea' style='background:var(--bg-color); padding: 20px; display:inline-block;'>";
+            str += "<table style='width:350px; font-family:var(--body-font); color:#fff; margin:0 auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-hover-bg); color:var(--btn-hover-text); padding:10px; border: 1px solid #444;'>Rank<\/td><td style='background:var(--btn-hover-bg); color:var(--btn-hover-text); padding:10px; border: 1px solid #444;'>Song<\/td><\/tr>";
             for (i=0; i<namMember.length; i++) {
-                str += "<tr style='border-bottom:1px solid #444;'><td style='padding:10px;'>"+ranking+"<\/td><td style='padding:10px;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
+                str += "<tr><td style='padding:10px; border: 1px solid #444;'>"+ranking+"<\/td><td style='padding:10px; border: 1px solid #444;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
                 if (i<namMember.length-1) {
                     if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
                 }
             }
-            str += "<\/table>";
+            str += "<\/table><\/div>";
             document.getElementById("resultField").innerHTML = str;
             document.getElementById("mainTable").style.display = "none";
+            document.getElementById("download-btn").style.display = "block"; // Show download button
+        }
+            
+        function downloadImage() {
+            const area = document.getElementById('captureArea');
+            html2canvas(area, { backgroundColor: "#1c1c1c" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'red-tv-ranking.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
         }
 
         function skipQuestion() {
@@ -240,8 +271,8 @@
 <body>
 <div class="header-container">
     <div class="main-logo"></div>
-    <h1 class="album-title">Example</h1>
-    <span class="album-subtitle">example</span>
+    <h1 class="album-title">Title</h1>
+    <span class="album-subtitle">Subtitle</span>
         <p class="instructions-text">
         Select which song you like better to get an accurate list.<br>
         <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
@@ -265,11 +296,16 @@
         </td>
     </tr>
 </table>
+<button id="download-btn" onclick="downloadImage()">Download Results as Image</button>
 <div id="resultField"></div>
-
 <script type="text/javascript">
     initList();
     showImage();
 </script>
+<p class="other">
+<center><small><p style="color:#ffffff">used with permission</p>
+<a href="http://biasorter.tumblr.com/" style= "color:#ffffff">original code created by biasorter</a><br />
+<a href="https://www.tumblr.com/suvisorters" style= "color:#ffffff">modified by suvisorters</a>
+</small></center>
 </body>
 </html>
