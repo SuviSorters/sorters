@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Midnights Sorter</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style type="text/css">
+/* =========================================================
+   1. VISUAL SETTINGS (Change these for each album!)
+=========================================================*/
+    :root {
+    /*FONTS*/
+        --header-font: 'Inter Tight', sans-serif; --header-size: 5rem; --header-weight: 800;
+        --subtitle-font: '', sans-serif; --subtitle-size: 2rem; --subtitle-weight: 200;
+        --body-font: 'Comfortaa', sans-serif;
+        
+        --header-letter-spacing: 0px;
+        --subtitle-letter-spacing: 0px;
+        --header-line-height: 1.0;
+
+    /*COLORS*/
+        --color-1: #1f2e43;
+        --color-2: #e0edfd;
+    /*EXTRA COLORS (Replace with #hex value if you want to change it)*/
+        --header-color: var(--color-1);
+        --subtitle-color: #ffffff;
+        --note-color: var(--color-1);
+        --battle-color: var(--color-2);
+        --showdown-color: var(--color-2);
+        --glow-color: var(--color-2);
+        
+        --bg-color: #1c1c1c;
+
+        --btn-bg: #1c1c1c;
+        --btn-text: var(--color-2);
+        --btn-outline: var(--color-2);
+        --btn-hover-bg: var(--color-1);
+        --btn-hover-text: var(--color-2);
+
+    /* IMAGES */
+        --album-cover: url("https://upload.wikimedia.org/wikipedia/en/9/9f/Midnights_-_Taylor_Swift.png");
+        --logo-link: url('https://upload.wikimedia.org/wikipedia/commons/6/6e/TaylorSwiftAlbum2006.png');
+        --logo-width: 600px;
+        --logo-height: 100px;
+    }
+
+/* =========================================================
+    CORE STYLES (Usually don't need to touch these)
+========================================================= */
+    body { 
+        background-color: var(--bg-color); 
+        color: var(--header-color); 
+        font-family: var(--body-font); 
+        text-align: center; }
+    
+    .main-logo {
+        width: var(--logo-width);
+        height: var(--logo-height);
+        background-image: var(--logo-link);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 20px auto;
+        display: block;
+        filter: invert(100%); }
+
+    h1.album-title {
+        font-family: var(--header-font);
+        font-weight: var(--header-weight);
+        font-size: var(--header-size);
+        font-style: ;
+        letter-spacing: var(--header-letter-spacing);
+        line-height: var(--header-line-height);
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: var(--header-color);
+    }
+    
+    .album-subtitle {
+        font-family: var(--subtitle-font);
+        font-weight: var(--subtitle-weight);
+        font-size: var(--subtitle-size);
+        letter-spacing: var(--subtitle-letter-spacing);
+        margin-top: 5px;
+        margin-bottom: 15px;
+        display: block;
+        color: var(--subtitle-color);
+    }
+
+    #battleNumber { 
+        font-size: 20px; 
+        color: var(--showdown-color); 
+        padding-bottom: 20px; }
+
+    #leftField, #rightField {
+        font-family: var(--header-font);
+        font-style: ;
+        text-transform: ;
+        width: 250px; height: 250px; display: table-cell; 
+        vertical-align: middle; text-align: center;
+        border-radius: 40px; 
+        background-image: var(--album-cover);
+        background-size: cover; background-position: center; 
+        position: relative; cursor: pointer;
+        font-size: 35px; font-weight: 800; 
+        color: #FFFFFF !important; 
+        text-shadow: 0 0 10px #000; z-index: 5; transition: 0.3s;
+    }
+
+    #leftField:hover, #rightField:hover { 
+        transform: scale(1.03); 
+        box-shadow: 0 0 30px var(--glow-color); }
+    #leftField::before, #rightField::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 40px; z-index: -1; }
+
+    .middleField { width: 150px; height: 80px; border: 4px solid var(--btn-outline); border-radius: 20px; background: var(--btn-bg); color: var(--btn-text); cursor: pointer; transition: 0.3s; }
+    .middleField:hover { background: var(--btn-hover-bg); color: var(--btn-hover-text); }
+
+    .spotify-preview { margin-top: 15px; border-radius: 12px; display: block; margin-left: auto; margin-right: auto; transition: 0.3s; }
+    .spotify-preview:hover { box-shadow: 0 0 20px var(--glow-color); }
+
+    #download-btn {
+        margin: 20px auto;
+        padding: 10px 25px;
+        background: var(--btn-bg);
+        color: var(--btn-text);
+        border: 2px solid var(--btn-outline);
+        border-radius: 10px;
+        font-family: var(--body-font);
+        cursor: pointer;
+        display: none; /* Hidden until results show */
+    }
+    #download-btn:hover {
+        background: var(--color-1);
+        color: var(--btn-hover-text);
+    }
+
+    .header-container { margin: 50px 0; }
+    .instructions-text { color: #cccccc; font-size: 16px; margin-top: 5px;}
+    .note { color: var(--note-color); font-style: italic; display: block; margin-top: 10px; }
+    #mainTable { margin: 40px auto; border-spacing: 20px; }
+    </style>
+
+    <script type="text/javascript">
+        
+/* =========================================================
+   2. SONG DATA
+========================================================= */
+        var namMember = [
+    { name: "Lavender Haze", id: "5jQI2r1RdgtuT8S3iG8zFC" },
+    { name: "Maroon", id: "3eX0NZfLtGzoLUxPNvRfqm" },
+    { name: "Anti-Hero", id: "0V3wPSX9ygBnCm8psDIegu" },
+    { name: "Snow on the Beach", id: "1wtOxkiel43cVs0Yux5Q4h" },
+    { name: "You're On Your Own, Kid", id: "4D7BCuvgdJlYvlX5WlN54t" },
+    { name: "Midnight Rain", id: "3rWDp9tBPQR9z6U5YyRSK4" },
+    { name: "Question...?", id: "0heeNYlwOGuUSe7TgUD27B" },
+    { name: "Vigilante Shit", id: "1xwAWUI6Dj0WGC3KiUPN0O" },
+    { name: "Bejeweled", id: "3qoftcUZaUOncvIYjFSPdE" },
+    { name: "Labyrinth", id: "0A1JLUlkZkp2EFrosoNQi0" },
+    { name: "Karma", id: "7KokYm8cMIXCsGVmUvKtqf" },
+    { name: "Sweet Nothing", id: "0wavGRldH0AWyu2zvTz8zb" },
+    { name: "Mastermind", id: "7FmYn9e7KHMXcxqGSj9LjH" },
+    { name: "The Great War", id: "3UMrglJeju5yWyYIW6o99b" },
+    { name: "Bigger Than the Whole Sky", id: "0BiqmkasE5FdrChwKfVp8X" },
+    { name: "Paris", id: "7712gjoih4QoDbXpljEk21" },
+    { name: "High Infidelity", id: "5kiZGSxgqPdv6rbqL9THdd" },
+    { name: "Glitch", id: "6wAFvJPpTZVirBKGZ4EnMW" },
+    { name: "Would've, Could've, Should've", id: "0aV5uARAknQgYhBaK944FP" },
+    { name: "Dear Reader", id: "3QF5RsWzK1lCvf2o2cY65P" },
+    { name: "Hits Different", id: "3xYJScVfxByb61dYHTwiby" },
+    { name: "You're Losing Me", id: "3CWq0pAKKTWb0K4yiglDc4" }
+        ];
+
+/* =========================================================
+   3. LOGIC ENGINE (Safe to ignore)
+========================================================= */
+        var lstMember = [], parent = [], equal = [], rec = [];
+        var cmp1, cmp2, head1, head2, nrec, numQuestion, totalSize, finishSize, finishFlag = 0;
+
+        function initList(){
+            var n = 0, mid, i;
+            lstMember[n] = [];
+            for (i=0; i<namMember.length; i++) { lstMember[n][i] = i; }
+            parent[n] = -1; totalSize = 0; n++;
+            for (i=0; i<lstMember.length; i++) {
+                if(lstMember[i].length>=2) {
+                    mid = Math.ceil(lstMember[i].length/2);
+                    lstMember[n] = lstMember[i].slice(0,mid); totalSize += lstMember[n].length; parent[n] = i; n++;
+                    lstMember[n] = lstMember[i].slice(mid,lstMember[i].length); totalSize += lstMember[n].length; parent[n] = i; n++;
+                }
+            }
+            for (i=0; i<namMember.length; i++) { rec[i] = 0; }
+            nrec = 0;
+            for (i=0; i<=namMember.length; i++) { equal[i] = -1; }
+            cmp1 = lstMember.length-2; cmp2 = lstMember.length-1;
+            head1 = 0; head2 = 0; numQuestion = 1; finishSize = 0;
+        }
+
+        function sortList(flag){
+            if (finishFlag) return;
+            if (flag<0) {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (flag>0) {
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            } else {
+                rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+                equal[rec[nrec-1]] = lstMember[cmp2][head2];
+                rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++;
+                while (equal[rec[nrec-1]]!=-1) { rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1<lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                while (head1<lstMember[cmp1].length){ rec[nrec] = lstMember[cmp1][head1]; head1++; nrec++; finishSize++; }
+            } else if (head1==lstMember[cmp1].length && head2<lstMember[cmp2].length) {
+                while (head2<lstMember[cmp2].length){ rec[nrec] = lstMember[cmp2][head2]; head2++; nrec++; finishSize++; }
+            }
+            if (head1==lstMember[cmp1].length && head2==lstMember[cmp2].length) {
+                for (var i=0; i<lstMember[cmp1].length+lstMember[cmp2].length; i++) { lstMember[parent[cmp1]][i] = rec[i]; }
+                lstMember.pop(); lstMember.pop();
+                cmp1 -= 2; cmp2 -= 2; head1 = 0; head2 = 0;
+                if (head1==0 && head2==0) { for (i=0; i<namMember.length; i++) { rec[i] = 0; } nrec = 0; }
+            }
+            if (cmp1<0) {
+                document.getElementById("battleNumber").innerHTML = "Showdown #"+(numQuestion-1)+"<br>100% sorted.";
+                showResult(); finishFlag = 1;
+            } else { showImage(); }
+        }
+
+        function showResult() {
+            var ranking = 1, sameRank = 1, str = "", i;
+            str += "<div id='captureArea' style='background:var(--bg-color); padding: 20px; display:inline-block;'>";
+            str += "<table style='width:350px; font-family:var(--body-font); color:#fff; margin:0 auto; border-collapse:collapse;'>";
+            str += "<tr><td style='background:var(--btn-hover-bg); color:var(--btn-hover-text); padding:10px; border: 1px solid #444;'>Rank<\/td><td style='background:var(--btn-hover-bg); color:var(--btn-hover-text); padding:10px; border: 1px solid #444;'>Song<\/td><\/tr>";
+            for (i=0; i<namMember.length; i++) {
+                str += "<tr><td style='padding:10px; border: 1px solid #444;'>"+ranking+"<\/td><td style='padding:10px; border: 1px solid #444;'>"+namMember[lstMember[0][i]].name+"<\/td><\/tr>";
+                if (i<namMember.length-1) {
+                    if (equal[lstMember[0][i]]==lstMember[0][i+1]) { sameRank++; } else { ranking += sameRank; sameRank = 1; }
+                }
+            }
+            str += "<\/table><\/div>";
+            document.getElementById("resultField").innerHTML = str;
+            document.getElementById("mainTable").style.display = "none";
+            document.getElementById("download-btn").style.display = "block"; // Show download button
+        }
+            
+        function downloadImage() {
+            const area = document.getElementById('captureArea');
+            html2canvas(area, { backgroundColor: "#1c1c1c" }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'lover-ranking.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        function skipQuestion() {
+            if (finishFlag) return;
+            var randomChoice = Math.random() < 0.5 ? -1 : 1;
+            sortList(randomChoice);
+        }
+
+        function showImage() {
+            var leftSong = namMember[lstMember[cmp1][head1]];
+            var rightSong = namMember[lstMember[cmp2][head2]];
+
+            document.getElementById("battleNumber").innerHTML = "Showdown #"+numQuestion+"<br>"+Math.floor(finishSize*100/totalSize)+"% sorted.";
+            document.getElementById("leftField").innerHTML = leftSong.name;
+            document.getElementById("rightField").innerHTML = rightSong.name;
+            
+            updatePlayer("leftPreview", leftSong.id);
+            updatePlayer("rightPreview", rightSong.id);
+
+            numQuestion++;
+        }
+
+        function updatePlayer(elementId, songId) {
+            var player = document.getElementById(elementId);
+            if (songId === "") {
+                player.style.visibility = "hidden";
+            } else {
+                player.style.visibility = "visible";
+                player.src = `https://open.spotify.com/embed/track/${songId}?utm_source=generator&theme=0`;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div class="header-container">
+    <div class="main-logo"></div>
+    <h1 class="album-title">Midnights</h1>
+    <span class="album-subtitle"></span>
+        <p class="instructions-text">
+        Select which song you like better to get an accurate list.<br>
+        <span class="note">Note: Overusing 'no opinion' or 'I like both' can affect results.</span>
+    </p>
+</div>
+
+<table id="mainTable" align="center">
+    <tr><td id="battleNumber" colspan="3">Showdown #1<br>0% sorted.</td></tr>
+    <tr>
+        <td id="leftField" onclick="sortList(-1)"></td>
+        <td class="middleField" onclick="sortList(0)">I like both</td>
+        <td id="rightField" onclick="sortList(1)"></td>
+    </tr>
+    <tr id="preview-row">
+        <td>
+            <iframe id="leftPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
+        <td class="middleField" onclick="skipQuestion()">no opinion</td>
+        <td>
+            <iframe id="rightPreview" class="spotify-preview" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media" style="border:none; overflow:hidden;"></iframe>
+        </td>
+    </tr>
+</table>
+<button id="download-btn" onclick="downloadImage()">Download Results as Image</button>
+<div id="resultField"></div>
+<script type="text/javascript">
+    initList();
+    showImage();
+</script>
+<p class="other">
+<center><small><p style="color:#1f2e43">used with permission<br/>
+<a href="http://biasorter.tumblr.com/" style= "color:#e0edfd">original code created by biasorter</a><br />
+<a href="https://www.tumblr.com/suvisorters" style= "color:#e0edfd">modified by suvisorters</a>
+</small></center>
+</body>
+</html>
